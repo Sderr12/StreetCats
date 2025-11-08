@@ -27,7 +27,7 @@
 <p align="center">
   <a href="#project-description">Project Description</a> • 
   <a href="#key-features">Key Features</a> • 
-  <a href="#technology-stack">Tech Stack</a>
+  <a href="#tested-on">Tested on </a>
 </p>
 
 # Project Description
@@ -36,12 +36,30 @@ The project aims to create an innovative and user-friendly website.
 
 
 # Key Features
--
--
--
+- **User Authentication & Authorization**
+- **Public Discovery & Exploration**:
+  - **Interactive Discovery Map**: A central, interactive map displaying all submitted cats as clickable markers.
+  - **Detailed Cat Profile Page**: A dedicated profile page for each cat.
+- **Community Interaction & Engagement**:
+  - **Comments**: users can post and read comments on cat's profile.
+
+
+# Tested on
+<p>
+  <a href="https://zen-browser.app/" title="Zen Browser">
+    <img src="https://cdn.simpleicons.org/firefoxbrowser/FF7139" alt="Zen Browser" width="48" />
+  </a>
+  <a href="https://www.google.com/chrome/" title="Google Chrome">
+    <img src="https://cdn.simpleicons.org/googlechrome/4285F4" alt="Google Chrome" width="48" />
+  </a>
+  <a href="https://www.apple.com/safari/" title="Safari">
+    <img src="https://cdn.simpleicons.org/safari/0FB5EE" alt="Safari" width="48" />
+  </a>
+</p>
 
 <br>
 <br>
+
 <div align="right">
 
   <a href="https://opensource.org/licenses/MIT">
