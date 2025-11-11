@@ -2,6 +2,9 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import streetimage from "../assets/siamese-cat-new.png";
 import logo from "../assets/onlycat-removebg-preview.png";
+import binoculars from '../assets/binoculars-white.png'
+import map from '../assets/map-white.png'
+import home from '../assets/home-white.png'
 
 const Home = () => {
   const navigate = useNavigate();
@@ -102,7 +105,7 @@ const Home = () => {
 
 
 
-      <footer className="bg-gray-900 text-gray-300 py-8 px-6">
+      <footer className="bg-gray-900 text-gray-300 py-8 px-6 pb-20">
         <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-3 gap-8">
           <div>
             <h3 className="text-lg font-semibold text-white mb-2">StreetCats</h3>
@@ -134,6 +137,21 @@ const Home = () => {
           © {new Date().getFullYear()} StreetCats — All rights reserved.
         </div>
       </footer>
+
+      <div className="fixed bottom-0 left-0 w-full bg-gray-900 border-t border-t-gray-300 shadow-md flex justify-around items-center h-12 z-50">
+        <button className="bg-amber-400 w-9 h-9 rounded-full flex flex-col items-center justify-center"
+          onClick={() => navigate("/map")}>
+          <img src={map} alt={"map"} className='w-6 h-6 ' />
+        </button>
+        <button className="bg-amber-400 w-9 h-9 rounded-full flex flex-col items-center justify-center"
+          onClick={() => navigate("/home")}>
+          <img src={home} alt={"home"} className='w-6 h-6 ' />
+        </button>
+        <button className="bg-amber-400 w-9 h-9 rounded-full flex flex-col items-center justify-center"
+          onClick={() => navigate("/")}>
+          <img src={binoculars} alt={"binoculars"} className='w-6 h-6 ' />
+        </button>
+      </div>
     </div>
   );
 };
