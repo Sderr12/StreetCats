@@ -5,6 +5,8 @@ import './index.css'
 import App from './pages/App.tsx'
 import Layout from './pages/Layout.tsx'
 import Home from './pages/Home.tsx'
+import Map from './pages/Map.tsx'
+import Testpage from './pages/Testpage.tsx'
 
 const router = createBrowserRouter([
   {
@@ -19,12 +21,21 @@ const router = createBrowserRouter([
             path: "",
             element: <Navigate to="/home" replace />
           },
+          {
+            path: "/map",
+            element: <Map />
+          }
         ]
       },
 
       {
         path: "/home",
         element: <Home />
+      },
+
+      {
+        path: "/test",
+        element: <Testpage />
       }
     ]
   }
