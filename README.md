@@ -43,6 +43,52 @@ The project aims to create an innovative and user-friendly website.
 - **Community Interaction & Engagement**:
   - **Comments**: users can post and read comments on cat's profile.
 
+# How to execute
+The project is built using **ReactTS** and **Vite**. To run it locally, make sure you have **Node.js** and **npm** (or **yarn**/**pnpm**) installed. Then you can follow these steps:
+### Frontend
+1. Clone the repository
+```sh
+git clone https://github.com/Sderr12/StreetCats.git
+```
+2. Navigate into the project folder
+```sh
+cd ~/StreetCats/frontend/
+```
+3. Install all dependencies
+```sh
+npm install 
+```
+  or
+```sh
+yarn install 
+```
+  or
+```sh
+pnpm install 
+```
+4. Start the development server
+```sh
+npm run dev 
+```
+or
+```sh
+yarn run dev 
+```
+or
+```sh
+pnpm install 
+```
+Once the server starts, Vite will display a local development URL (usually http://localhost:5173).
+Open it in your browser to view the app.
+For a production-ready build, run:
+```sh
+npm run build
+```
+and preview it locally using:
+```sh
+npm run preview
+```
+### Backend
 
 # Tested on
 <p>
