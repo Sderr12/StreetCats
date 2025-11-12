@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom'
 const Bottombar = () => {
   const navigate = useNavigate()
   return (
-    <div className="bg-gray-900 border-b border-t-gray-200 bottom-0 left-0 w-full shadow-md flex justify-around items-center h-12 z-50">
+    <div className="bg-white border-b border-t-gray-200 bottom-0 left-0 w-full shadow-md flex justify-around items-center h-12 z-50">
       <button className="bg-amber-400 w-9 h-9 rounded-full flex flex-col items-center justify-center"
         onClick={() => navigate("/map")}>
         <img src={map} alt={"map"} className='w-6 h-6 ' />

@@ -6,13 +6,13 @@ const Topbar = () => {
 
   return (
     <div
-      className='h-20 w-full fixed top-0 left-0 bg-gray-900 border-b border-b-gray-300 shadow-md z-50 flex items-center justify-between px-6'>
+      className='h-20 w-full fixed top-0 left-0 bg-white border-b border-b-gray-300 shadow-md z-50 flex items-center justify-between px-6'>
       < div className="flex items-center gap-3 cursor-pointer" onClick={() => navigate("/home")}>
         <img src={logo} alt="Logo" className="h-10" />
         <span className="hidden md:inline text-2xl text-amber-300 text-opacity-80 font-semibold">StreetCats</span>
       </div >
 
-      <div className="hidden lg:flex gap-8 text-lg text-white font-medium">
+      <div className="hidden lg:flex gap-8 text-lg text-black font-medium">
         <button
           className="hover:text-amber-400 transition-colors"
           onClick={() => navigate("/home")}

@@ -3,6 +3,7 @@ import { useMap } from "react-leaflet";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import L from "leaflet";
 import Catcard from "../components/Catcard";
+import Searchbar from "../components/Searchbar";
 import cat_white from '../assets/cat-white.png'
 import "leaflet/dist/leaflet.css";
 
@@ -44,13 +45,19 @@ const Map = () => {
   return (
     <div className="mt-20 flex flex-col md:flex-row w-full h-[calc(100vh-5rem)]">
       {/* Sidebar desktop */}
-      <div className="hidden lg:flex flex-col w-1/3 h-full bg-gray-300 p-4 border-r border-amber-200 overflow-y-auto">
-        <input
-          type="text"
-          placeholder="🔍 Search for a city!"
-          className="mb-4 p-2 rounded-lg border border-amber-300 focus:outline-none focus:ring-2 focus:ring-amber-400 top-60"
-        />
-        <div className="flex flex-col items-center gap-2 p-7">
+      <div className="hidden lg:flex flex-col items-center w-1/3 h-full bg-white p-4 border-r border-amber-200 overflow-y-auto">
+        <Searchbar></Searchbar>
+
+        <div className="w-full flex items-center justify-center my-4">
+          <div className="flex-grow w-1/2 border-t border-t-2 border-amber-200 opacity-70 px-2"></div>
+          <span className="mx-3 text-amber-400 opacity-70 font-semibold text-lg whitespace-nowrap">
+            Cats around you
+          </span>
+          <div className="flex-grow w-1/2 border-t border-t-2 border-amber-200 opacity-70"></div>
+        </div>
+
+        {/* Cards */}
+        <div className="flex flex-col items-center gap-3 w-full">
           <Catcard />
           <Catcard />
           <Catcard />

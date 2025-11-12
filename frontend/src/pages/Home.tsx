@@ -54,6 +54,12 @@ const Home = () => {
             >
               Map
             </button>
+            <button
+              className="hover:text-amber-400 transition-colors"
+              onClick={() => navigate("/addCat")}
+            >
+              Spot
+            </button>
           </div>
 
           {/* Sezione destra: profilo + menu mobile */}
@@ -105,7 +111,7 @@ const Home = () => {
 
 
 
-      <footer className="bg-gray-900 text-gray-300 py-8 px-6 pb-20">
+      <footer className="bg-gray-900 text-gray-300 py-8 px-6 pb-20 lg:pb-2">
         <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-3 gap-8">
           <div>
             <h3 className="text-lg font-semibold text-white mb-2">StreetCats</h3>
@@ -138,7 +144,7 @@ const Home = () => {
         </div>
       </footer>
 
-      <div className="fixed bottom-0 left-0 w-full bg-gray-900 border-t border-t-gray-300 shadow-md flex justify-around items-center h-12 z-50">
+      <div className="lg:hidden fixed bottom-0 left-0 w-full bg-gray-900 border-t border-t-gray-300 shadow-md flex justify-around items-center h-12 z-50">
         <button className="bg-amber-400 w-9 h-9 rounded-full flex flex-col items-center justify-center"
           onClick={() => navigate("/map")}>
           <img src={map} alt={"map"} className='w-6 h-6 ' />
