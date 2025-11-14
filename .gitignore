@@ -33,4 +33,11 @@ Thumbs.db
 yarn.lock
 pnpm-lock.yaml
 
+docs/*.aux
+docs/*.fdb_latexmk
+docs/*.fls
+docs/*.log
+docs/*.synctex.gz
+docs/*.tex
+
 
