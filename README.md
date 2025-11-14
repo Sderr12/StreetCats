@@ -26,8 +26,9 @@
 # Contents
 <p align="center">
   <a href="#project-description">Project Description</a> • 
-  <a href="#key-features">Key Features</a> • 
-  <a href="#tested-on">Tested on </a>
+  <a href="#key-features">Key Features</a> •
+  <a href="#how-to-execute">How to execute</a> •
+  <a href="#tested-on">Tested on </a> 
 </p>
 
 # Project Description
