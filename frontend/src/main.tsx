@@ -11,6 +11,7 @@ import Testpage from './pages/Testpage.tsx'
 import Spot from './pages/Spot.tsx'
 import ProtectedRoute from './context/ProtectedRoute.tsx'
 import Login from './pages/Login.tsx'
+import CatDetails from './pages/CatDetails.tsx'
 
 
 const router = createBrowserRouter([
@@ -37,6 +38,11 @@ const router = createBrowserRouter([
                 <Spot />
               </ProtectedRoute>
             )
+          },
+
+          {
+            path: "/catdetails/:id",
+            element: <CatDetails />
           }
         ]
       },
