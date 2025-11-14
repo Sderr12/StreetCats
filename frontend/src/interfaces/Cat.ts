@@ -1,4 +1,4 @@
-interface Cat {
+export interface Cat {
   id: number;
   name: string;
   image: string;
@@ -6,7 +6,7 @@ interface Cat {
 }
 
 
-interface catDTO {
+export interface CatDTO {
   name: string;
   image?: string;
   longitude: number;

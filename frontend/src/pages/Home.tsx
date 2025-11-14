@@ -56,7 +56,7 @@ const Home = () => {
             </button>
             <button
               className="hover:text-amber-400 transition-colors"
-              onClick={() => navigate("/addCat")}
+              onClick={() => navigate("/spot")}
             >
               Spot
             </button>
