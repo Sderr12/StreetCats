@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
+import { AuthContext } from "../context/AuthProvider";
 import streetimage from "../assets/siamese-cat-new.png";
 import logo from "../assets/onlycat-removebg-preview.png";
 import binoculars from '../assets/binoculars-white.png'
@@ -7,6 +9,10 @@ import map from '../assets/map-white.png'
 import home from '../assets/home-white.png'
 
 const Home = () => {
+
+  const context = useContext(AuthContext);
+
+
   const navigate = useNavigate();
   const [scrolled, setScrolled] = useState(false);
 
@@ -22,6 +28,15 @@ const Home = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  if (!context) { throw new Error("ProtectedRoute must be used inside AuthProvider") }
+  const { user } = context;
+
+
+  const handleClick = () => {
+    if (!user) { navigate("/login", { replace: true }) }
+    else { navigate("/spot") }
+  };
 
   return (
     <div className="w-full overflow-y-scroll">
@@ -56,7 +71,7 @@ const Home = () => {
             </button>
             <button
               className="hover:text-amber-400 transition-colors"
-              onClick={() => navigate("/spot")}
+              onClick={handleClick}
             >
               Spot
             </button>
@@ -95,7 +110,8 @@ const Home = () => {
           <p className="text-lg md:text-2xl text-gray-100 mt-4 font-light">
             Help the cat's distribution system find its way!
           </p>
-          <button className="mt-6 px-6 py-3 bg-amber-400 opacity-90 hover:bg-amber-500 text-white font-semibold rounded-full transition-all duration-300">
+          <button onClick={handleClick}
+            className="mt-6 px-6 py-3 bg-amber-400 opacity-90 hover:bg-amber-500 text-white font-semibold rounded-full transition-all duration-300">
             Spot a stray cat
           </button>
         </div>

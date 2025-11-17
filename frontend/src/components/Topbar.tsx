@@ -1,8 +1,21 @@
 import { useNavigate } from "react-router-dom";
 import logo from '../assets/onlycat-removebg-preview.png'
+import { AuthContext } from "../context/AuthProvider";
+import { useContext } from "react"
 
 const Topbar = () => {
   const navigate = useNavigate();
+  const useAuth = useContext(AuthContext);
+
+
+  if (!useAuth) { throw new Error("Must be inside authprovider") }
+  const { user } = useAuth;
+
+  const handleClick = () => {
+    if (!user) { navigate("/login", { replace: true }) }
+    else { navigate("/spot") }
+  }
+
 
   return (
     <div
@@ -27,7 +40,7 @@ const Topbar = () => {
         </button>
         <button
           className="hover:text-amber-400 transition-colors"
-          onClick={() => navigate("/addCat")}
+          onClick={handleClick}
         >
           Spot
         </button>

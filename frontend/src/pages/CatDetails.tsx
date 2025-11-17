@@ -12,8 +12,6 @@ const CatDetails = () => {
   const [cat, setCat] = useState<Cat>({
     id: 0,
     name: "",
-    age: 0,
-    breed: "",
     description: "",
     image: ""
   });
@@ -25,8 +23,6 @@ const CatDetails = () => {
     return {
       id,
       name: `Spotted Cat #${id}`,
-      age: 3,
-      breed: "European",
       description: "A friendly stray spotted near the park.",
       image: "https://placekitten.com/1200/800",
     };
@@ -35,21 +31,36 @@ const CatDetails = () => {
 
 
   return (
-    <div className="w-full h-full overflow-y-scroll">
-      <div className="mt-23 w-full text-center text-4xl font-semibold">
+    <div className="w-full h-full overflow-y-scroll lg:flex lg:flex-row">
+      <div className="lg:hidden mt-23 w-full text-center text-4xl font-semibold">
         Spotted cat
       </div>
       <section
-        className="relative bg-red-400 h-screen w-full flex lg:flex-row bg-cover bg-center lg:bg-[center_40%]"
+        className="lg:hidden relative bg-red-400 h-screen w-full flex lg:flex-row bg-cover bg-center lg:bg-[center_40%]"
       >
       </section>
 
       {/* Second Section */}
       <section
         id="second"
-        className="w-full h-screen bg-gray-400 flex items-top justify-center flex-col"
+        className="lg:w-2/3 w-full h-screen bg-gray-400 flex items-top justify-center flex-col"
       >
-        <h2 className="text-4xl font-bold text-white text-center">Details</h2>
+        <h2 className="lg:hidden text-4xl font-bold text-white text-center">Description</h2>
+
+
+        {/* Here starts Details and position on map for larger display */}
+        <h2 className="hidden lg:block mt-23 text-4xl font-bold text-white text-center"> Spotted Cat </h2>
+
+        <div className="bg-red-900 w-full h-full">
+        </div>
+      </section>
+
+
+      <section
+        id="third"
+        className="w-full lg:w-1/3 h-screen bg-gray-700 flex items-top justify-center flex-col "
+      >
+        <h2 className="lg:mt-23 text-4xl font-bold text-white text-center">Comments</h2>
 
 
         <div className="bg-white w-full h-full">
@@ -58,7 +69,7 @@ const CatDetails = () => {
 
 
 
-      <footer className="bg-gray-900 text-gray-300 py-8 px-6 pb-10 lg:pb-2">
+      <footer className="lg:hidden bg-gray-900 text-gray-300 py-8 px-6 pb-10 lg:pb-2">
         <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-3 gap-8">
           <div>
             <h3 className="text-lg font-semibold text-white mb-2">StreetCats</h3>
