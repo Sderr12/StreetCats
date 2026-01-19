@@ -1,109 +1,199 @@
-import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useState } from 'react';
+import { MapPin, Calendar, MessageCircle, ArrowLeft } from 'lucide-react';
 
-import type { Cat } from "../interfaces/"
-
-const CatDetails = () => {
-  const [comments, setComments] = useState<Comment[]>([]);
+const CatDetailPage = () => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [newComment, setNewComment] = useState("");
+  const [comments, setComments] = useState([
+    { 
+      user: "Maria Rossi", 
+      avatar: "https://i.pravatar.cc/150?img=1", 
+      text: "L'ho visto ieri vicino al mercato, sembra stare bene! 🧡", 
+      date: "2 ore fa", 
+      id: 1 
+    },
+    { 
+      user: "Luca Bianchi", 
+      avatar: "https://i.pravatar.cc/150?img=3", 
+      text: "Bellissimo gatto! Molto socievole, si è avvicinato subito", 
+      date: "1 giorno fa", 
+      id: 2 
+    },
+    { 
+      user: "Anna Verdi", 
+      avatar: "https://i.pravatar.cc/150?img=5", 
+      text: "Gli porto sempre del cibo quando passo di là ❤️", 
+      date: "3 giorni fa", 
+      id: 3 
+    }
+  ]);
 
-
-  const { id } = useParams<{ id: string }>();
-  const [cat, setCat] = useState<Cat>({
-    id: 0,
-    name: "",
-    description: "",
-    image: ""
-  });
-
-
-  const mockFetchCat = async (id: number): Promise<Cat | null> => {
-    await new Promise((r) => setTimeout(r, 300));
-    if (id <= 0 || id > 9999) return null;
-    return {
-      id,
-      name: `Spotted Cat #${id}`,
-      description: "A friendly stray spotted near the park.",
-      image: "https://placekitten.com/1200/800",
-    };
+  const handleAddComment = () => {
+    if (newComment.trim() && isAuthenticated) {
+      const comment = {
+        user: "Tu",
+        avatar: "https://i.pravatar.cc/150?img=8",
+        text: newComment,
+        date: "Adesso",
+        id: Date.now()
+      };
+      setComments([comment, ...comments]);
+      setNewComment("");
+    }
   };
 
+  const cat = {
+    title: "Gatto tigrato vicino al mercato",
+    description: `Questo bellissimo gatto tigrato è stato avvistato più volte nei pressi del mercato di Monters. 
 
+Ha un carattere molto socievole e ama avvicinarsi alle persone. Sembra in buone condizioni di salute e indossa un collare arancione.
+
+Spesso lo si può trovare nei pressi della panetteria, dove riposa al sole durante le ore più calde della giornata.`,
+    location: "Monters, Paris",
+    insertDate: "26 Ottobre 2023",
+    image: "https://images.unsplash.com/photo-1574158622682-e40e69881006?w=800&h=600&fit=crop",
+    lat: 48.8566,
+    lng: 2.3522
+  };
 
   return (
-    <div className="w-full h-full overflow-y-scroll lg:flex lg:flex-row">
-      <div className="lg:hidden mt-23 w-full text-center text-4xl font-semibold">
-        Spotted cat
+    <div className="min-h-screen bg-gray-50 overflow-y-scroll">
+
+      {/* Main Content */}
+      <div className="max-w-4xl mx-auto px-4 py-8">
+        <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
+          {/* Image */}
+          <img 
+            src={cat.image} 
+            alt={cat.title} 
+            className="w-full h-96 object-cover"
+          />
+
+          {/* Main content 2 */}
+          <div className="p-6 sm:p-8">
+            {/* Title */}
+            <h1 className="text-3xl font-bold text-gray-800 mb-4">{cat.title}</h1>
+
+            {/* Metadati */}
+            <div className="flex flex-wrap gap-4 mb-6 text-sm text-gray-600">
+              <div className="flex items-center gap-2">
+                <MapPin size={18} className="text-orange-500" />
+                <span>{cat.location}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Calendar size={18} className="text-orange-500" />
+                <span>Inserito il {cat.insertDate}</span>
+              </div>
+            </div>
+
+            {/* Description */}
+            <div className="mb-8">
+              <h2 className="text-xl font-semibold text-gray-800 mb-3">Descrizione</h2>
+              <div className="text-gray-700 leading-relaxed whitespace-pre-line">
+                {cat.description}
+              </div>
+            </div>
+
+            {/* Map */}
+            <div className="mb-8">
+              <h2 className="text-xl font-semibold text-gray-800 mb-3">Posizione</h2>
+              <div className="bg-gradient-to-br from-orange-100 to-amber-100 rounded-xl h-64 flex items-center justify-center relative overflow-hidden">
+                <MapPin size={64} className="text-orange-500" />
+                <div className="absolute bottom-4 left-4 bg-white px-4 py-2 rounded-lg shadow-md">
+                  <p className="text-sm font-semibold text-gray-800">{cat.location}</p>
+                  <p className="text-xs text-gray-600">Lat: {cat.lat}, Lng: {cat.lng}</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Comment section */}
+            <div>
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-xl font-semibold text-gray-800">
+                  Commenti ({comments.length})
+                </h2>
+                <MessageCircle size={24} className="text-orange-500" />
+              </div>
+
+              {/* Form per aggiungere commento */}
+              {isAuthenticated ? (
+                <div className="mb-6 bg-orange-50 rounded-xl p-4">
+                  <div className="flex gap-3">
+                    <img 
+                      src="https://i.pravatar.cc/150?img=8" 
+                      alt="You" 
+                      className="w-10 h-10 rounded-full object-cover"
+                    />
+                    <div className="flex-1">
+                      <textarea
+                        value={newComment}
+                        onChange={(e) => setNewComment(e.target.value)}
+                        placeholder="Scrivi un commento..."
+                        rows={3}
+                        className="w-full px-4 py-3 bg-white border border-orange-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-400 text-sm resize-none"
+                      />
+                      <div className="flex justify-end mt-2">
+                        <button 
+                          onClick={handleAddComment}
+                          disabled={!newComment.trim()}
+                          className="bg-orange-500 hover:bg-orange-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-white px-6 py-2 rounded-lg font-semibold transition text-sm"
+                        >
+                          Pubblica
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <div className="mb-6 bg-blue-50 border border-blue-200 rounded-xl p-4 text-center">
+                  <p className="text-blue-800 text-sm mb-2">
+                    Devi essere autenticato per lasciare un commento
+                  </p>
+                  <button 
+                    onClick={() => setIsAuthenticated(true)}
+                    className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold transition text-sm"
+                  >
+                    Accedi per commentare
+                  </button>
+                </div>
+              )}
+
+              {/* Comment list */}
+              <div className="space-y-4">
+                {comments.length > 0 ? (
+                  comments.map((comment) => (
+                    <div key={comment.id} className="flex gap-3 border-b border-gray-100 pb-4 last:border-0">
+                      <img 
+                        src={comment.avatar} 
+                        alt={comment.user} 
+                        className="w-10 h-10 rounded-full object-cover flex-shrink-0"
+                      />
+                      <div className="flex-1">
+                        <div className="bg-gray-50 rounded-2xl p-4">
+                          <p className="font-semibold text-gray-800 text-sm mb-1">
+                            {comment.user}
+                          </p>
+                          <p className="text-gray-700 text-sm leading-relaxed">
+                            {comment.text}
+                          </p>
+                        </div>
+                        <p className="text-xs text-gray-500 mt-2 ml-4">{comment.date}</p>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <p className="text-gray-500 text-center py-8 text-sm">
+                    Nessun commento ancora. Sii il primo a commentare!
+                  </p>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <section
-        className="lg:hidden relative bg-red-400 h-screen w-full flex lg:flex-row bg-cover bg-center lg:bg-[center_40%]"
-      >
-      </section>
-
-      {/* Second Section */}
-      <section
-        id="second"
-        className="lg:w-2/3 w-full h-screen bg-gray-400 flex items-top justify-center flex-col"
-      >
-        <h2 className="lg:hidden text-4xl font-bold text-white text-center">Description</h2>
-
-
-        {/* Here starts Details and position on map for larger display */}
-        <h2 className="hidden lg:block mt-23 text-4xl font-bold text-white text-center"> Spotted Cat </h2>
-
-        <div className="bg-red-900 w-full h-full">
-        </div>
-      </section>
-
-
-      <section
-        id="third"
-        className="w-full lg:w-1/3 h-screen bg-gray-700 flex items-top justify-center flex-col "
-      >
-        <h2 className="lg:mt-23 text-4xl font-bold text-white text-center">Comments</h2>
-
-
-        <div className="bg-white w-full h-full">
-        </div>
-      </section>
-
-
-
-      <footer className="lg:hidden bg-gray-900 text-gray-300 py-8 px-6 pb-10 lg:pb-2">
-        <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-3 gap-8">
-          <div>
-            <h3 className="text-lg font-semibold text-white mb-2">StreetCats</h3>
-            <p className="text-sm text-gray-400">
-              Let's help cats, one pawn at time! 🐾
-            </p>
-          </div>
-
-          <div>
-            <h4 className="text-md font-semibold text-white mb-2">Explore</h4>
-            <ul className="space-y-1">
-              <li><a href="/home" className="hover:text-amber-400">Home</a></li>
-              <li><a href="/map" className="hover:text-amber-400">Map</a></li>
-              <li><a href="/about" className="hover:text-amber-400">Who are we?</a></li>
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="text-md font-semibold text-white mb-2">Support</h4>
-            <ul className="space-y-1">
-              <li><a href="/contact" className="hover:text-amber-400">Contacts</a></li>
-              <li><a href="/privacy" className="hover:text-amber-400">Privacy</a></li>
-              <li><a href="/terms" className="hover:text-amber-400">Terms</a></li>
-            </ul>
-          </div>
-        </div>
-
-        <div className="mt-8 border-t border-gray-700 pt-4 text-center text-sm text-gray-500">
-          © {new Date().getFullYear()} StreetCats — All rights reserved.
-        </div>
-      </footer>
 
     </div>
   );
-}
+};
 
-export default CatDetails;
+export default CatDetailPage;

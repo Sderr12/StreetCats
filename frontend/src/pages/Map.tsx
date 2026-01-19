@@ -14,17 +14,19 @@ const catIcon = new L.Icon({
   popupAnchor: [0, -40],
 });
 
-
-const RecenterOnUser = ({ position }: { position: [number, number] }) => {
+const RecenterMap = ({ center }: { center: [number, number] }) => {
   const map = useMap();
   useEffect(() => {
-    map.setView(position, 15);
-  }, [position, map]);
+    map.flyTo(center, 15, { duration: 1.5 }); 
+  }, [center, map]);
   return null;
 };
 
 const Map = () => {
   const [userPosition, setUserPosition] = useState<[number, number]>([
+    41.212, 13.576,
+  ]);
+  const [mapCenter, setMapCenter] = useState<[number, number]>([
     41.212, 13.576,
   ]);
   const [isSliderOpen, setIsSliderOpen] = useState(false);
@@ -33,7 +35,9 @@ const Map = () => {
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(
         (pos) => {
-          setUserPosition([pos.coords.latitude, pos.coords.longitude]);
+          const position: [number, number] = [pos.coords.latitude, pos.coords.longitude];
+          setUserPosition(position);
+          setMapCenter(position);
         },
         (err) => {
           console.warn("Error recovering position", err);
@@ -41,12 +45,34 @@ const Map = () => {
       );
     }
   }, []);
-  <RecenterOnUser position={userPosition} />
+
+  const handleLocationSearch = async (query: string) => {
+    console.log("Cercando:", query);
+    try {
+      const response = await fetch(
+        `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&limit=1`
+      );
+      const data = await response.json();
+      console.log("Risultati:", data);
+      
+      if (data && data.length > 0) {
+        const { lat, lon } = data[0];
+        const newCenter: [number, number] = [parseFloat(lat), parseFloat(lon)];
+        console.log("Nuove coordinate:", newCenter);
+        setMapCenter(newCenter);
+      } else {
+        console.log("Nessun risultato trovato per:", query);
+      }
+    } catch (error) {
+      console.error("Errore nella ricerca:", error);
+    }
+  };
+
   return (
     <div className="mt-20 flex flex-col md:flex-row w-full h-[calc(100vh-5rem)]">
       {/* Sidebar desktop */}
       <div className="hidden lg:flex flex-col items-center w-1/3 h-full bg-white p-4 border-r border-amber-200 overflow-y-auto">
-        <Searchbar></Searchbar>
+        <Searchbar onSearch={handleLocationSearch} />
 
         <div className="w-full flex items-center justify-center my-4">
           <div className="flex-grow w-1/2 border-t border-t-2 border-amber-200 opacity-70 px-2"></div>
@@ -81,7 +107,7 @@ const Map = () => {
             <Popup>You are here!</Popup>
           </Marker>
 
-          <RecenterOnUser position={userPosition} />
+          <RecenterMap center={mapCenter} />
         </MapContainer>
 
         {/* Button on mobile to open slider */}
@@ -95,9 +121,11 @@ const Map = () => {
 
         {/* Slider mobile */}
         <div
-          className={`fixed bottom-0 left-0 w-full bg-white rounded-t-2xl shadow-lg flex flex-col transition-transform duration-300 ${isSliderOpen ? "translate-y-0" : "translate-y-full"
-            }`}
-          style={{ height: "70vh" }}         >
+          className={`fixed bottom-0 left-0 w-full bg-white rounded-t-2xl shadow-lg flex flex-col transition-transform duration-300 ${
+            isSliderOpen ? "translate-y-0" : "translate-y-full"
+          }`}
+          style={{ height: "70vh" }}
+        >
           {/* Slider's topbar */}
           <div className="flex justify-between items-center p-4 border-b border-gray-200 bg-white rounded-t-2xl flex-shrink-0">
             <h2 className="text-lg font-semibold text-amber-900 text-opacity-80">

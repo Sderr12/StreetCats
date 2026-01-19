@@ -127,8 +127,8 @@ const Home = () => {
 
 
 
-      <footer className="bg-gray-900 text-gray-300 py-8 px-6 pb-20 lg:pb-2">
-        <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-3 gap-8">
+      <footer className="bg-gray-900 text-gray-300 py-8 px-6 pb-20 lg:pb-2 justify-center items-center">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-3 gap-8 text-center">
           <div>
             <h3 className="text-lg font-semibold text-white mb-2">StreetCats</h3>
             <p className="text-sm text-gray-400">
