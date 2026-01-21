@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    /* Layout del Progetto */
+    "rootDir": "./src",            // Dice a TS di guardare solo dentro src
+    "outDir": "./dist",            // Dice a TS di creare la cartella dist con i file pronti
+    "sourceMap": true,             // Utile per il debug
+    "declaration": true,           // Genera i file .d.ts
+
+    /* Ambiente Node.js Moderno (ESM) */
+    "module": "NodeNext",          // Fondamentale per "type": "module"
+    "moduleResolution": "NodeNext",
+    "target": "ESNext",            // Usa le ultime funzionalità di JavaScript
+    "lib": ["ESNext"],
+    "types": ["node"],             // Abilita i tipi di Node.js
+
+    /* Rigore e Qualità (Da vero Leader) */
+    "strict": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,       // Migliora la compatibilità tra moduli
+    "verbatimModuleSyntax": true,  // Forza una sintassi degli import pulita
+    "isolatedModules": true,
+    "moduleDetection": "force",
+
+    /* React (anche se è backend, lo teniamo per compatibilità) */
+    "jsx": "react-jsx"
+  },
+  "include": ["src/**/*"],         // Compila tutto quello che c'è in src
+  "exclude": ["node_modules", "dist"] // Ignora queste cartelle
+}
