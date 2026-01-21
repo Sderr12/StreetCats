@@ -60,7 +60,7 @@ Spesso lo si può trovare nei pressi della panetteria, dove riposa al sole duran
     <div className="min-h-screen bg-gray-50 overflow-y-scroll">
 
       {/* Main Content */}
-      <div className="max-w-4xl mx-auto px-4 py-8">
+      <div className="max-w-4xl mx-auto px-4 py-20">
         <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
           {/* Image */}
           <img 

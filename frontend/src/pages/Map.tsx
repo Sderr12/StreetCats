@@ -113,7 +113,7 @@ const Map = () => {
         {/* Button on mobile to open slider */}
         <button
           onClick={() => setIsSliderOpen(true)}
-          className="box flex items-center gap-2 absolute bottom-4 right-4 bg-amber-300 hover:bg-amber-600 text-white font-semibold py-2 px-4 rounded-full shadow-lg lg:hidden transition-all"
+          className="box flex items-center gap-2 absolute bottom-20 right-4 bg-amber-300 hover:bg-amber-600 text-white font-semibold py-2 px-4 rounded-full shadow-lg lg:hidden transition-all"
         >
           <img src={cat_white} alt={"cat"} className="h-6 w-6" />
           <p> Around you</p>

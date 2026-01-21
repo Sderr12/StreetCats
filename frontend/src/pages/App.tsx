@@ -3,7 +3,7 @@ import { Outlet } from 'react-router-dom'
 const App = () => {
 
   return (
-    <div className="h-dvh overflow-hidden flex flex-col">
+    <div className="h-dvh flex">
       <Outlet />
     </div>
   )

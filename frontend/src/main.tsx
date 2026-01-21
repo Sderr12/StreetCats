@@ -12,7 +12,9 @@ import Spot from './pages/Spot.tsx'
 import ProtectedRoute from './context/ProtectedRoute.tsx'
 import Login from './pages/Login.tsx'
 import CatDetails from './pages/CatDetails.tsx'
-
+import AddCat from './pages/AddCat.tsx'
+import AuthLayout from './pages/AuthLayout.tsx'
+import Register from './pages/Register.tsx'
 
 const router = createBrowserRouter([
   {
@@ -27,6 +29,12 @@ const router = createBrowserRouter([
             path: "",
             element: <Navigate to="/home" replace />
           },
+
+          {
+            path: "/home",
+            element: <Home/>
+          },
+
           {
             path: "/map",
             element: <Map />
@@ -35,9 +43,14 @@ const router = createBrowserRouter([
             path: "/spot",
             element: (
               <ProtectedRoute>
-                <Spot />
+                <AddCat />
               </ProtectedRoute>
             )
+          },
+
+          {
+            path: "/spottest",
+            element: <AddCat />
           },
 
           {
@@ -48,14 +61,21 @@ const router = createBrowserRouter([
       },
 
       {
-        path: "/login",
-        element: <Login />
+        path: "",
+        element: <AuthLayout />,
+        children: [
+          {
+            path: "/login",
+            element: <Login />
+          },
+
+          {
+            path: "/register",
+            element: <Register />
+          }
+        ]
       },
 
-      {
-        path: "/home",
-        element: <Home />
-      },
 
       {
         path: "/test",

@@ -1,24 +1,20 @@
-import { useEffect, useState } from "react";
-import { useContext } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useEffect, useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthProvider";
 import streetimage from "../assets/siamese-cat-new.png";
-import logo from "../assets/onlycat-removebg-preview.png";
-import binoculars from '../assets/binoculars-white.png'
-import map from '../assets/map-white.png'
-import home from '../assets/home-white.png'
+import binoculars from '../assets/binoculars-white.png';
+import map from '../assets/map-white.png';
+import home from '../assets/home-white.png';
+
 
 const Home = () => {
-
   const context = useContext(AuthContext);
-
-
   const navigate = useNavigate();
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
-      const secondSection = document.getElementById("second");
+      const secondSection = document.getElementById("features");
       if (secondSection) {
         const top = secondSection.getBoundingClientRect().top;
         setScrolled(top <= 80);
@@ -29,151 +25,162 @@ const Home = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  if (!context) { throw new Error("ProtectedRoute must be used inside AuthProvider") }
+  if (!context) {
+    throw new Error("Must be used inside AuthProvider");
+  }
   const { user } = context;
 
-
   const handleClick = () => {
-    if (!user) { navigate("/login", { replace: true }) }
-    else { navigate("/spot") }
+    if (!user) {
+      navigate("/login", { replace: true });
+    } else {
+      navigate("/spot");
+    }
   };
 
+  const features = [
+    {
+      title: "Interactive Map",
+      description: "Explore spotted cats on an interactive map with real-time updates from the community"
+    },
+    {
+      title: "Report Sightings",
+      description: "Share photos and locations of street cats you encounter to help build our database"
+    },
+    {
+      title: "Community Care",
+      description: "Connect with others who care about street cats and coordinate care efforts"
+    },
+    {
+      icon: "👥",
+      title: "Join the Movement",
+      description: "Be part of a global community dedicated to monitoring and protecting street cats"
+    }
+  ];
+
+  const stats = [
+    { number: "2,547", label: "Cats Spotted" },
+    { number: "1,234", label: "Active Users" },
+    { number: "89", label: "Cities" },
+    { number: "4.9", label: "Avg Rating" }
+  ];
+
   return (
-    <div className="w-full overflow-y-scroll">
-      <section className="relative h-screen w-full">
-        <div
-          className="absolute inset-0 bg-cover bg-center lg:bg-[center_40%]"
+    <div className="w-full min-h-screen">
+      {/* Hero Section */}
+      <section className="relative h-screen w-full overflow-hidden">
+        {/* Background Image */}
+        <div 
+          className="absolute inset-0 bg-cover bg-center lg:bg-[center_30%] transition-transform duration-700 hover:scale-105"
           style={{ backgroundImage: `url(${streetimage})` }}
         />
-        <div className="absolute inset-0 bg-black/50" />
-
-        <div
-          className={`fixed top-0 shadow-md left-0 w-full flex items-center justify-between h-20 px-4 sm:px-8 z-50 transition-colors duration-300 ${scrolled ? "bg-white shadow-md text-black" : "bg-transparent text-white"
-            }`}
-        >
-          <div className="flex items-center gap-3 cursor-pointer" onClick={() => navigate("/home")}>
-            <img src={logo} alt="Logo" className="h-10" />
-            <span className="hidden lg:inline text-2xl text-amber-300 text-opacity-80 font-semibold">StreetCats</span>
-          </div>
-
-          <div className="hidden lg:flex gap-8 text-lg font-medium">
-            <button
-              className="hover:text-amber-400 transition-colors"
-              onClick={() => navigate("/home")}
-            >
-              Home
-            </button>
-            <button
-              className="hover:text-amber-400 transition-colors"
-              onClick={() => navigate("/map")}
-            >
-              Map
-            </button>
-            <button
-              className="hover:text-amber-400 transition-colors"
-              onClick={handleClick}
-            >
-              Spot
-            </button>
-          </div>
-
-          {/* Sezione destra: profilo + menu mobile */}
-          <div className="flex items-center gap-3">
-            <img
-              className="w-10 h-10 rounded-full cursor-pointer border border-white/40"
-              onClick={() => navigate("/self")}
-            />
-            {/* Menu burger solo su mobile */}
-            <button className="lg:hidden p-2">
-              <svg
-                className="w-6 h-6"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M4 6h16M4 12h16M4 18h16"
-                />
-              </svg>
-            </button>
-          </div>
-        </div>
+        
+        {/* Gradient Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-br from-black/70 via-black/50 to-transparent" />
+        
+        {/* Animated Elements */}
 
         {/* Hero Content */}
-        <div className="relative z-10 flex flex-col items-start justify-center h-full p-10 md:p-20 lg:pl-40  lg:top-30 top-30">
-          <h1 className="text-4xl md:text-6xl font-serif text-amber-300 drop-shadow-xl">
-            Welcome on <span className="font-bold text-white">StreetCats</span>
+        <div className="relative z-10 flex flex-col items-start justify-center h-full px-6 md:px-12 lg:px-40 max-w-7xl mx-auto">
+          
+          <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold text-white drop-shadow-2xl mb-6 leading-tight">
+            Welcome to
+            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-orange-400 to-amber-500 mt-2">
+              StreetCats
+            </span>
           </h1>
-          <p className="text-lg md:text-2xl text-gray-100 mt-4 font-light">
-            Help the cat's distribution system find its way!
+          
+          <p className="text-xl md:text-2xl lg:text-3xl text-gray-200 font-light mb-8 max-w-2xl leading-relaxed">
+            Help the cat distribution system find its way through our global community
           </p>
-          <button onClick={handleClick}
-            className="mt-6 px-6 py-3 bg-amber-400 opacity-90 hover:bg-amber-500 text-white font-semibold rounded-full transition-all duration-300">
-            Spot a stray cat
+
+          <div className="flex flex-col sm:flex-row gap-4">
+            <button 
+              onClick={handleClick}
+              className="group px-8 py-4 bg-gradient-to-r from-amber-400 to-orange-500 hover:from-amber-500 hover:to-orange-600 text-white font-bold rounded-full transition-all duration-300 shadow-xl hover:shadow-2xl hover:scale-105 flex items-center gap-2 justify-center"
+            >
+              Spot a Street Cat
+              <span className="group-hover:translate-x-1 transition-transform">→</span>
+            </button>
+            
+            <button 
+              onClick={() => navigate("/map")}
+              className="px-8 py-4 bg-white/10 backdrop-blur-md border-2 border-white/30 hover:bg-white/20 text-white font-semibold rounded-full transition-all duration-300 hover:scale-105"
+            >
+              Explore the Map
+            </button>
+          </div>
+
+        </div>
+
+      </section>
+
+      {/* Features Section */}
+      <section 
+        id="features"
+        className="w-full py-20 lg:py-32 bg-gradient-to-br from-gray-50 via-orange-50 to-amber-50"
+      >
+        <div className="max-w-7xl mx-auto px-6 md:px-12">
+          <div className="text-center mb-16">
+            <div className="inline-block mb-4">
+              <span className="bg-amber-400/20 text-amber-700 px-4 py-2 rounded-full text-sm font-semibold">
+                Why StreetCats?
+              </span>
+            </div>
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-800 mb-6">
+              Making a Difference,
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-500 to-orange-600"> Together</span>
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Join thousands of cat lovers worldwide in creating a safer, more caring environment for street cats
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {features.map((feature, index) => (
+              <div 
+                key={index}
+                className="group bg-white rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border border-gray-100"
+              >
+                <h3 className="text-xl font-bold text-gray-800 mb-3">
+                  {feature.title}
+                </h3>
+                <p className="text-gray-600 leading-relaxed">
+                  {feature.description}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="w-full py-20 lg:py-32 bg-gradient-to-r from-amber-300 via-orange-500 to-amber-600 relative overflow-hidden">
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-0 left-0 w-96 h-96 bg-white rounded-full blur-3xl" />
+          <div className="absolute bottom-0 right-0 w-96 h-96 bg-white rounded-full blur-3xl" />
+        </div>
+        
+        <div className="max-w-4xl mx-auto px-6 md:px-12 text-center relative z-10">
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
+            Ready to Make a Difference?
+          </h2>
+          <p className="text-xl md:text-2xl text-white/90 mb-10 leading-relaxed">
+            Every spotted cat counts. Join our community today and help us build a comprehensive database of street cats worldwide.
+          </p>
+          <button 
+            onClick={handleClick}
+            className="group px-10 py-5 bg-white hover:bg-gray-50 text-orange-600 font-bold rounded-full transition-all duration-300 shadow-2xl hover:scale-105 text-lg inline-flex items-center gap-3"
+          >
+            Get Started Now
+            <span className="group-hover:translate-x-1 transition-transform">→</span>
           </button>
         </div>
       </section>
 
-      {/* Second Section */}
-      <section
-        id="second"
-        className="w-full h-screen bg-gray-400 flex items-center justify-center"
-      >
-        <h2 className="text-4xl font-bold text-white">Second Section</h2>
-      </section>
+      {/* Footer */}
 
-
-
-      <footer className="bg-gray-900 text-gray-300 py-8 px-6 pb-20 lg:pb-2 justify-center items-center">
-        <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-3 gap-8 text-center">
-          <div>
-            <h3 className="text-lg font-semibold text-white mb-2">StreetCats</h3>
-            <p className="text-sm text-gray-400">
-              Let's help cats, one pawn at time! 🐾
-            </p>
-          </div>
-
-          <div>
-            <h4 className="text-md font-semibold text-white mb-2">Explore</h4>
-            <ul className="space-y-1">
-              <li><a href="/home" className="hover:text-amber-400">Home</a></li>
-              <li><a href="/map" className="hover:text-amber-400">Map</a></li>
-              <li><a href="/about" className="hover:text-amber-400">Who are we?</a></li>
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="text-md font-semibold text-white mb-2">Support</h4>
-            <ul className="space-y-1">
-              <li><a href="/contact" className="hover:text-amber-400">Contacts</a></li>
-              <li><a href="/privacy" className="hover:text-amber-400">Privacy</a></li>
-              <li><a href="/terms" className="hover:text-amber-400">Terms</a></li>
-            </ul>
-          </div>
-        </div>
-
-        <div className="mt-8 border-t border-gray-700 pt-4 text-center text-sm text-gray-500">
-          © {new Date().getFullYear()} StreetCats — All rights reserved.
-        </div>
-      </footer>
-
-      <div className="lg:hidden fixed bottom-0 left-0 w-full bg-gray-900 border-t border-t-gray-300 shadow-md flex justify-around items-center h-12 z-50">
-        <button className="bg-amber-400 w-9 h-9 rounded-full flex flex-col items-center justify-center"
-          onClick={() => navigate("/map")}>
-          <img src={map} alt={"map"} className='w-6 h-6 ' />
-        </button>
-        <button className="bg-amber-400 w-9 h-9 rounded-full flex flex-col items-center justify-center"
-          onClick={() => navigate("/home")}>
-          <img src={home} alt={"home"} className='w-6 h-6 ' />
-        </button>
-        <button className="bg-amber-400 w-9 h-9 rounded-full flex flex-col items-center justify-center"
-          onClick={() => navigate("/")}>
-          <img src={binoculars} alt={"binoculars"} className='w-6 h-6 ' />
-        </button>
-      </div>
+      {/* Mobile Bottom Navigation */}
     </div>
   );
 };
