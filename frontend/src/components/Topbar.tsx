@@ -13,16 +13,15 @@ const Topbar = () => {
     if (!user) { navigate("/login", { replace: true }) }
     else { navigate("/spot") }
   }
+
   
   return (
     <div className='w-full fixed z-50 left-0 top-0 right-0 h-16 bg-white border-b border-b-gray-300 shadow-md flex items-center justify-between px-6'>
-      {/* Logo a sinistra */}
       <div className="flex items-center gap-3 cursor-pointer flex-1" onClick={() => navigate("/home")}>
         <img src={logo} alt="Logo" className="h-10" />
         <span className="hidden md:inline text-2xl text-amber-300 text-opacity-80 font-semibold">StreetCats</span>
       </div>
       
-      {/* Menu centrale */}
       <div className="hidden lg:flex items-center gap-8 text-lg text-black font-medium absolute left-1/2 transform -translate-x-1/2">
         <button
           className="hover:text-amber-400 transition-colors"
@@ -47,7 +46,7 @@ const Topbar = () => {
       {/* Profilo a destra */}
       <div className="flex items-center gap-3 flex-1 justify-end">
         <img
-          src="https://i.pravatar.cc/150?img=8"
+          src={user?.avatarUrl || "https://via.placeholder.com/150/FEF3C7/92400E?text=👤"}
           alt="Profile"
           className="w-10 h-10 rounded-full cursor-pointer border border-white/40 bg-amber-200"
           onClick={() => navigate("/self")}

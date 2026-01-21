@@ -1,13 +1,13 @@
 import binoculars from '../assets/binoculars-white.png'
 import map from '../assets/map-white.png'
 import home from '../assets/home-white.png'
-
+import useAuth from '../hooks/useAuth.ts'
 
 import { useNavigate } from 'react-router-dom'
 
 const Bottombar = () => {
   const navigate = useNavigate()
-  
+  const { user } = useAuth();
   
   const handleClick = () => {
     if (!user) {

@@ -1,5 +1,3 @@
-
-
 export interface Comment {
   id: number;
   author: string;
@@ -8,7 +6,3 @@ export interface Comment {
 };
 
 
-export interface CommentDTO {
-  author: string;
-  text: string;
-}

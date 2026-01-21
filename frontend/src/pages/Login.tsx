@@ -14,7 +14,8 @@ const Login = () => {
     const fakeUser = { 
       id: "1", 
       name: "Supremo Leader", 
-      email: "leader@streetcats.com" 
+      email: "leader@streetcats.com",
+      avatarUrl: "https://i.pravatar.cc/150?img=8"
     };
 
     try {
