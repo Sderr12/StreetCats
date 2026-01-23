@@ -1,19 +1,40 @@
-import prisma from "../prisma.ts";
-import { UserRepository } from "../interfaces/repositories/user.repository.ts";
-import { userDTO } from "../interfaces/dto/user.dto.ts";
-import { User } from "@prisma/client";
+import { prisma } from "../prisma.js";
+import type { UserRepository } from "../interfaces/repositories/user.repository.ts";
+import {
+  toUserDTO,
+  toUserCredentialsDTO,
+  type UserDTO,
+  type UserCredentialsDTO
+} from "../interfaces/dto/user.dto.js";
 
-export class userPrisma implements UserRepository{
+export class userPrisma implements UserRepository {
 
-  async findByEmail(email: string): Promise<User | null> {
-    return prisma.user.findUnique({
+  async findByEmail(email: string): Promise<UserCredentialsDTO | null> {
+    const user = await prisma.user.findUnique({
       where: { email }
     });
+
+    if (!user) return null;
+
+    return toUserCredentialsDTO({
+      ...user,
+      avatarUrl: user.avatarUrl ?? undefined
+    } as UserCredentialsDTO);
   }
 
+  async create(user: UserCredentialsDTO): Promise<UserDTO> {
+    const newUser = await prisma.user.create({
+      data: {
+        username: user.username,
+        email: user.email,
+        password: user.password,
+        avatarUrl: user.avatarUrl ?? null
+      }
+    });
 
-  async create(user: userDTO) {
-    return prisma.user.create({ user });
+    return toUserDTO({
+      ...newUser,
+      avatarUrl: newUser.avatarUrl ?? undefined
+    } as UserCredentialsDTO);
   }
-
 }

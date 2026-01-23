@@ -1,9 +1,12 @@
-import express from "express";
-import type { Application } from "express";
+import express, { type Application } from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import { prisma } from "./prisma"
+import { AuthService } from "./services/authService.js";
+import { AuthRoute } from "./routes/auth.js";
+import { AuthController } from "./controllers/auth.controller.js";
+import { RepoFactory } from "./factory/RepoFactory.js";
 
+dotenv.config();
 
 class App {
   private readonly app: Application;
@@ -16,10 +19,33 @@ class App {
     this.app.use(cors());
     this.app.use(express.json());
 
-
+    this.init();
   }
 
+  private initRoutes() {
+    const { authService } = this.initServices();
+    const authController = new AuthController(authService);
+    const authRoute = new AuthRoute(authController);
 
+    this.app.use("/auth", authRoute.router);
+  }
+
+  private initServices() {
+    const { userRepo } = this.initRepo();
+    const authService = new AuthService(userRepo);
+    return { authService };
+  }
+
+  private initRepo() {
+    const factory = new RepoFactory();
+    const repoType = process.env.REPO_TYPE ?? "prisma";
+    const userRepo = factory.getUserRepo(repoType);
+    return { userRepo };
+  }
+
+  private init() {
+    this.initRoutes();
+  }
 
   public listen() {
     this.app.listen(this.port, () => {
@@ -29,4 +55,3 @@ class App {
 }
 
 export default App;
-

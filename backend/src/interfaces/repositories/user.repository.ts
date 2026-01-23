@@ -1,13 +1,14 @@
-import { User } from "@prisma/client";
+import type { UserCredentialsDTO, UserDTO } from "../dto/user.dto.ts"
 
 export interface UserRepository {
 
-  findByEmail(email: string): Promise<User | null>;
-  
+  findByEmail(email: string): Promise<UserCredentialsDTO | null>;
+
   create(data: {
     username: string;
     email: string;
     password: string;
-  }): Promise<User>;
+    avatarUrl?: string;
+  }): Promise<UserDTO>;
 
 }

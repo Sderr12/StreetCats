@@ -4,10 +4,10 @@ import logo from '../assets/onlycat-removebg-preview.png'
 
 const cardVariants = {
   initial: {
-    x: 300,        
+    x: 300,
     opacity: 0,
-    scale: 0.9,    
-    rotate: 5,     
+    scale: 0.9,
+    rotate: 5,
   },
   animate: {
     x: 0,
@@ -15,13 +15,13 @@ const cardVariants = {
     scale: 1,
     rotate: 0,
     transition: {
-      type: "spring", 
+      type: "spring",
       stiffness: 260,
       damping: 20,
     },
   },
   exit: {
-    x: -300,       
+    x: -300,
     opacity: 0,
     scale: 0.9,
     rotate: -5,
@@ -35,24 +35,28 @@ const AuthLayout = () => {
   const location = useLocation()
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-gray-100 px-4 overflow-hidden">
-      <div className="relative w-full max-w-md h-[500px] flex items-center justify-center">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={location.pathname}
-            variants={cardVariants}
-            initial="initial"
-            animate="animate"
-            exit="exit"
-            className="bg-white rounded-3xl shadow-2xl p-8 absolute w-full border border-gray-100 flex flex-col items-center justify-center"
-          >
-          <div className="h-1/2 w-20 bg-black">
-            <img src={logo} alt="Logo" className="h-1/2" />
+    <div className="min-h-screen w-full flex flex-col items-center justify-start bg-gray-100 px-4 py-2 overflow-y-auto">
+
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={location.pathname}
+          variants={cardVariants}
+          initial="initial"
+          animate="animate"
+          exit="exit"
+          // rimosso 'absolute', aggiunto 'my-auto' per centrare se c'è spazio
+          className="bg-white rounded-3xl shadow-2xl p-8 w-full max-w-md border border-gray-100 flex flex-col items-center my-auto"
+        >
+          {/* Logo con dimensioni fisse e non percentuali */}
+          <div className="w-24 mb-6 flex justify-center">
+            <img src={logo} alt="Logo" className="w-full h-auto" />
           </div>
+
+          <div className="w-full">
             <Outlet />
-          </motion.div>
-        </AnimatePresence>
-      </div>
+          </div>
+        </motion.div>
+      </AnimatePresence>
     </div>
   )
 }
