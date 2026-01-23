@@ -57,33 +57,39 @@ cd ~/StreetCats/frontend/
 ```
 3. Install all dependencies
 ```sh
-npm install 
+
+# Using npm
+npm install
+
+# Using yarn
+yarn install
+
+# Using pnpm
+pnpm install
 ```
-  or
+4. Run the development server
 ```sh
-yarn install 
-```
-  or
-```sh
-pnpm install 
-```
-4. Start the development server
-```sh
-npm run dev 
-```
-or
-```sh
-yarn run dev 
-```
-or
-```sh
-pnpm install 
+# Using npm
+npm run dev
+
+# Using yarn
+yarn run dev
+
+# Using pnpm
+pnpm run dev
 ```
 Once the server starts, Vite will display a local development URL (usually http://localhost:5173).
 Open it in your browser to view the app.
 For a production-ready build, run:
 ```sh
+# Using npm
 npm run build
+
+# Using yarn 
+yarn run dev
+
+# Using pnpm
+pnpm run dev
 ```
 and preview it locally using:
 ```sh
