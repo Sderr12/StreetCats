@@ -63,7 +63,7 @@ const Register = () => {
       if (token && user) {
         localStorage.setItem("token", token);
         localStorage.setItem("user", JSON.stringify(user));
-        login(user, token);
+        login(user);
         navigate("/home");
       }
     } catch (err: any) {

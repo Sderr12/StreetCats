@@ -1,8 +1,7 @@
-// prisma/schema.prisma
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL") // <- qui deve stare
+  url      = env("DATABASE_URL") 
 }
 
 generator client {
@@ -15,4 +14,40 @@ model User {
   username String
   password String
   avatarUrl String?
+
+  cats Cat[]
+  comments Comment[]
+
+  createdAt DateTime @default(now())
+}
+
+
+model Cat {
+    id Int @id @default(autoincrement())
+    title String
+    description String
+    latitude Float 
+    longitude Float
+    photo String
+
+    userId Int 
+    user User @relation(fields: [userId], references: [id])
+
+    comments Comment[]
+
+    createdAt DateTime @default(now())
+}
+
+
+model Comment {
+  id Int @id @default(autoincrement())
+  content String 
+
+  userId Int 
+  user User @relation(fields: [userId], references: [id])
+
+  catId Int
+  cat Cat @relation(fields: [catId], references: [id])
+
+  createdAt DateTime @default(now())
 }

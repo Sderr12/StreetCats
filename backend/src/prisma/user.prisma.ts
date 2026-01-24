@@ -16,10 +16,13 @@ export class userPrisma implements UserRepository {
 
     if (!user) return null;
 
-    return toUserCredentialsDTO({
-      ...user,
+    return {
+      id: user.id,
+      username: user.username,
+      email: user.email,
+      password: user.password,
       avatarUrl: user.avatarUrl ?? undefined
-    } as UserCredentialsDTO);
+    };
   }
 
   async create(user: UserCredentialsDTO): Promise<UserDTO> {

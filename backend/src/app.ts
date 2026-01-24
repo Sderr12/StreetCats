@@ -5,6 +5,8 @@ import { AuthService } from "./services/authService.js";
 import { AuthRoute } from "./routes/auth.js";
 import { AuthController } from "./controllers/auth.controller.js";
 import { RepoFactory } from "./factory/RepoFactory.js";
+import path from "path";
+
 
 dotenv.config();
 
@@ -19,6 +21,9 @@ class App {
     this.app.use(cors());
     this.app.use(express.json());
 
+    const uploadsPath = path.join(process.cwd(), "uploads");
+
+    this.app.use("/uploads", express.static(uploadsPath));
     this.init();
   }
 
