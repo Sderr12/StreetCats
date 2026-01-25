@@ -64,28 +64,31 @@ export class catPrisma implements CatRepository {
      * @returns A promise resolving to an array of cats within the specified radius, 
      * ordered by proximity.
      */
-  async findInRadius(
-    lat: number,
-    lon: number,
-    radiusKm: number
-  ): Promise<catDTO[]> {
-    const cats = await prisma.$queryRaw<any[]>`
-      SELECT * FROM (
-        SELECT 
-          c.*, 
-          u.username AS "username", 
-          (6371 * acos(
-            cos(radians(${lat})) * cos(radians(c.latitude)) * cos(radians(c.longitude) - radians(${lon})) + 
-            sin(radians(${lat})) * sin(radians(c.latitude))
-          )) AS distance
-        FROM "Cat" c
-        JOIN "User" u ON c."userId" = u.id 
-      ) AS distances
-      WHERE distance < ${radiusKm}
-      ORDER BY distance;
-    `;
+  async findInRadius(lat: number, lon: number, radiusKm: number): Promise<catDTO[]> {
+    // 1. Recuperiamo tutti i gatti con i loro utenti (usando Prisma standard, sicuro su ogni DB)
+    const allCats = await prisma.cat.findMany({
+      include: { user: true }
+    });
 
-    return cats.map(cat => this.mapToDTO(cat));
+    // 2. Funzione matematica Haversine in TypeScript
+    const calculateDistance = (lat1: number, lon1: number, lat2: number, lon2: number) => {
+      const R = 6371;
+      const dLat = (lat2 - lat1) * Math.PI / 180;
+      const dLon = (lon2 - lon1) * Math.PI / 180;
+      const a =
+        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+      return R * c;
+    };
+
+    // 3. Filtriamo i gatti entro il raggio
+    const nearbyCats = allCats.filter(cat => {
+      const distance = calculateDistance(lat, lon, cat.latitude, cat.longitude);
+      return distance <= radiusKm;
+    });
+
+    return nearbyCats.map(cat => this.mapToDTO(cat));
   }
 
 

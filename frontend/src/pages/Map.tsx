@@ -1,153 +1,144 @@
-import { useState, useEffect } from "react";
-import { useMap } from "react-leaflet";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import { useState, useEffect, useCallback, useMemo, useRef } from "react";
+import { useMap, useMapEvents, MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import L from "leaflet";
+import axios from "../api/axios";
+import { useNavigate } from "react-router-dom";
 import Catcard from "../components/Catcard";
 import Searchbar from "../components/Searchbar";
-import cat_white from '../assets/cat-white.png'
+import cat_white from '../assets/cat-white.png';
 import "leaflet/dist/leaflet.css";
 
 const catIcon = new L.Icon({
-  iconUrl: "https://cdn-icons-png.flaticon.com/512/149/149071.png",
+  iconUrl: "https://cdn-icons-png.flaticon.com/512/616/616430.png",
+  iconSize: [30, 30],
+  iconAnchor: [22.5, 45],
+  popupAnchor: [0, -45],
+});
+
+const userIcon = new L.Icon({
+  iconUrl: "https://cdn-icons-png.flaticon.com/512/709/709612.png",
   iconSize: [40, 40],
   iconAnchor: [20, 40],
   popupAnchor: [0, -40],
 });
 
-const RecenterMap = ({ center }: { center: [number, number] }) => {
+const MapEvents = ({ onCenterChange }: { onCenterChange: (lat: number, lng: number) => void }) => {
+  const map = useMapEvents({
+    dragend: () => onCenterChange(map.getCenter().lat, map.getCenter().lng),
+    zoomend: () => onCenterChange(map.getCenter().lat, map.getCenter().lng),
+  });
+  return null;
+};
+
+const RecenterMap = ({ center, shouldRecenter }: { center: [number, number], shouldRecenter: boolean }) => {
   const map = useMap();
   useEffect(() => {
-    map.flyTo(center, 15, { duration: 1.5 }); 
-  }, [center, map]);
+    if (shouldRecenter) map.flyTo(center, 15, { duration: 1.5 });
+  }, [center, shouldRecenter, map]);
   return null;
 };
 
 const Map = () => {
-  const [userPosition, setUserPosition] = useState<[number, number]>([
-    41.212, 13.576,
-  ]);
-  const [mapCenter, setMapCenter] = useState<[number, number]>([
-    41.212, 13.576,
-  ]);
+  const navigate = useNavigate();
+  const [userPosition, setUserPosition] = useState<[number, number]>([41.212, 13.576]);
+  const [mapCenter, setMapCenter] = useState<[number, number]>([41.212, 13.576]);
+  const [programmaticCenter, setProgrammaticCenter] = useState<[number, number]>([41.212, 13.576]);
+  const [shouldRecenter, setShouldRecenter] = useState(false);
+  const [cats, setCats] = useState<any[]>([]);
   const [isSliderOpen, setIsSliderOpen] = useState(false);
 
-  useEffect(() => {
-    if ("geolocation" in navigator) {
-      navigator.geolocation.getCurrentPosition(
-        (pos) => {
-          const position: [number, number] = [pos.coords.latitude, pos.coords.longitude];
-          setUserPosition(position);
-          setMapCenter(position);
-        },
-        (err) => {
-          console.warn("Error recovering position", err);
-        }
-      );
+  const fetchNearbyCats = useCallback(async (lat: number, lon: number) => {
+    try {
+      const response = await axios.get(`/cats/nearby`, { params: { lat, lon, radius: 10 } });
+      setCats(response.data);
+    } catch (error) {
+      console.error("Errore radar:", error);
     }
   }, []);
 
-  const handleLocationSearch = async (query: string) => {
-    console.log("Cercando:", query);
-    try {
-      const response = await fetch(
-        `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&limit=1`
-      );
-      const data = await response.json();
-      console.log("Risultati:", data);
-      
-      if (data && data.length > 0) {
-        const { lat, lon } = data[0];
-        const newCenter: [number, number] = [parseFloat(lat), parseFloat(lon)];
-        console.log("Nuove coordinate:", newCenter);
-        setMapCenter(newCenter);
-      } else {
-        console.log("Nessun risultato trovato per:", query);
-      }
-    } catch (error) {
-      console.error("Errore nella ricerca:", error);
+  useEffect(() => {
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition((pos) => {
+        const p: [number, number] = [pos.coords.latitude, pos.coords.longitude];
+        setUserPosition(p); setMapCenter(p); setProgrammaticCenter(p); setShouldRecenter(true);
+      });
     }
-  };
+  }, []);
+
+  useEffect(() => { fetchNearbyCats(mapCenter[0], mapCenter[1]); }, [mapCenter, fetchNearbyCats]);
+
+  const handleUserCenterChange = useCallback((lat: number, lng: number) => {
+    setMapCenter([lat, lng]);
+    setShouldRecenter(false);
+  }, []);
+
+  const catMarkers = useMemo(() => cats.map((cat) => (
+    <Marker key={cat.id} position={[cat.latitude, cat.longitude]} icon={catIcon}>
+      <Popup>
+        <div className="text-center p-1">
+          <h3 className="font-bold mb-1">{cat.title}</h3>
+          <button
+            onClick={() => navigate(`/catdetails/${cat.id}`)}
+            className="bg-orange-500 text-white px-3 py-1 rounded-full text-xs font-bold hover:bg-orange-600 transition-all"
+          >
+            DETTAGLI
+          </button>
+        </div>
+      </Popup>
+    </Marker>
+  )), [cats, navigate]);
 
   return (
-    <div className="mt-20 flex flex-col md:flex-row w-full h-[calc(100vh-5rem)]">
-      {/* Sidebar desktop */}
-      <div className="hidden lg:flex flex-col items-center w-1/3 h-full bg-white p-4 border-r border-amber-200 overflow-y-auto">
-        <Searchbar onSearch={handleLocationSearch} />
+    <div className="mt-20 flex flex-col lg:flex-row w-full h-[calc(100vh-5rem)] pb-16 lg:pb-0 overflow-hidden">
 
-        <div className="w-full flex items-center justify-center my-4">
-          <div className="flex-grow w-1/2 border-t border-t-2 border-amber-200 opacity-70 px-2"></div>
-          <span className="mx-3 text-amber-400 opacity-70 font-semibold text-lg whitespace-nowrap">
-            Cats around you
-          </span>
-          <div className="flex-grow w-1/2 border-t border-t-2 border-amber-200 opacity-70"></div>
-        </div>
-
-        {/* Cards */}
-        <div className="flex flex-col items-center gap-3 w-full">
-          <Catcard />
-          <Catcard />
-          <Catcard />
-          <Catcard />
-          <Catcard />
+      {/* Sidebar Desktop */}
+      <div className="hidden lg:flex flex-col w-1/3 bg-white dark:bg-slate-900 p-4 border-r border-amber-200 dark:border-slate-800 overflow-y-auto z-10">
+        <Searchbar onSearch={(q) => console.log(q)} />
+        <h2 className="my-6 text-amber-600 font-bold text-center border-b border-amber-100 pb-2 italic">Cats around</h2>
+        <div className="flex flex-col gap-4">
+          {cats.map(cat => <Catcard key={cat.id} cat={cat} />)}
         </div>
       </div>
 
-      {/* Map */}
-      <div className="flex-1 relative">
-        <MapContainer
-          center={userPosition}
-          zoom={15}
-          className="w-full h-full z-0"
-        >
+      <div className="flex-1 relative z-0">
+        <MapContainer center={userPosition} zoom={15} className="w-full h-full z-0">
           <TileLayer
-            attribution='&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a>'
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
-          <Marker position={userPosition} icon={catIcon}>
-            <Popup>You are here!</Popup>
-          </Marker>
-
-          <RecenterMap center={mapCenter} />
+          <MapEvents onCenterChange={handleUserCenterChange} />
+          <RecenterMap center={programmaticCenter} shouldRecenter={shouldRecenter} />
+          <Marker position={userPosition} icon={userIcon} />
+          {catMarkers}
         </MapContainer>
 
-        {/* Button on mobile to open slider */}
+        {/* Pulsante Mobile - z-index alto per stare sopra la mappa */}
         <button
           onClick={() => setIsSliderOpen(true)}
-          className="box flex items-center gap-2 absolute bottom-20 right-4 bg-amber-400 hover:bg-amber-600 text-white font-semibold py-2 px-4 rounded-full shadow-lg lg:hidden transition-all"
+          className="fixed bottom-24 right-6 bg-amber-500 p-4 rounded-full lg:hidden z-[999] shadow-2xl border-2 border-white transform active:scale-90 transition-transform h-15 w-15"
         >
-          <img src={cat_white} alt={"cat"} className="h-6 w-6" />
-          <p> Around you</p>
+          <img src={cat_white} className="w-7 h-7" alt="cats" />
         </button>
 
-        {/* Slider mobile */}
-        <div
-          className={`fixed bottom-0 left-0 w-full bg-white rounded-t-2xl shadow-lg flex flex-col transition-transform duration-300 ${
-            isSliderOpen ? "translate-y-0" : "translate-y-full"
-          }`}
-          style={{ height: "70vh" }}
-        >
-          {/* Slider's topbar */}
-          <div className="flex justify-between items-center p-4 border-b border-gray-200 bg-white rounded-t-2xl flex-shrink-0">
-            <h2 className="text-lg font-semibold text-amber-900 text-opacity-80">
-              Cats around you
-            </h2>
-            <button
-              onClick={() => setIsSliderOpen(false)}
-              className="text-gray-600 hover:text-gray-800 text-xl"
+        {/* Slider Mobile */}
+        {isSliderOpen && (
+          <>
+            <div className="fixed inset-0 bg-black/50 z-[1001] lg:hidden animate-fade-in" onClick={() => setIsSliderOpen(false)} />
+            <div
+              className="fixed bottom-0 w-full bg-white dark:bg-slate-900 rounded-t-3xl p-6 shadow-2xl z-[1002] lg:hidden h-[65vh] overflow-y-auto transition-all"
+              onClick={e => e.stopPropagation()}
             >
-              ✕
-            </button>
-          </div>
-
-          <div className="flex-1 overflow-y-auto flex flex-col gap-4 px-3 py-4">
-            <div className="flex flex-col items-center w-full gap-4">
-              <Catcard />
-              <Catcard />
-              <Catcard />
-              <Catcard />
+              <div className="w-12 h-1.5 bg-gray-300 rounded-full mx-auto mb-4" />
+              <div className="flex justify-between items-center mb-6">
+                <h3 className="font-bold text-xl text-amber-800 dark:text-amber-500">Gatti vicini</h3>
+                <button onClick={() => setIsSliderOpen(false)} className="text-3xl text-gray-400 font-light">&times;</button>
+              </div>
+              <div className="flex flex-col gap-4 pb-20">
+                {cats.map(cat => <Catcard key={cat.id} cat={cat} />)}
+              </div>
             </div>
-          </div>
-        </div>
+          </>
+        )}
       </div>
     </div>
   );

@@ -23,9 +23,11 @@ class AuthMiddleware {
         });
       }
 
-      res.locals.id = (decoded as jwt.JwtPayload).id;
+      const payload = decoded as jwt.JwtPayload;
+      res.locals.id = payload.userId;
+
       next();
-    })
+    });
   }
 }
 

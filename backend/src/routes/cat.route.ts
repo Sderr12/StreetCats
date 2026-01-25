@@ -29,7 +29,6 @@ export class CatRoute extends Route {
 
     this.router.get(
       '/nearby',
-      validate(getNearbySchema),
       (req: Request, res: Response) => this.catController.getNearbyCats(req, res)
     )
 
@@ -37,5 +36,11 @@ export class CatRoute extends Route {
       '/:id',
       (req: Request, res: Response) => this.catController.getCatDetails(req, res)
     );
+
+
+    this.router.get('/:id/comments', (req, res) => {
+      // Per ora restituiamo un array vuoto così il frontend non crasha
+      res.status(200).json([]);
+    });
   }
 }

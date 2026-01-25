@@ -25,7 +25,7 @@ export class userPrisma implements UserRepository {
     };
   }
 
-  async create(user: UserCredentialsDTO): Promise<UserDTO> {
+  async create(user: UserCredentialsDTO & { avatarUrl?: string }): Promise<UserDTO> {
     const newUser = await prisma.user.create({
       data: {
         username: user.username,

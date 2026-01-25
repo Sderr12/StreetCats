@@ -1,6 +1,5 @@
 import type { CatRepository } from "../interfaces/repositories/cat.repository.js";
 import type { catDTO, CreateCatDTO } from "../interfaces/dto/cat.dto.ts";
-import { Prisma } from "@prisma/client";
 
 export class CatService {
   private readonly catRepo: CatRepository;
@@ -16,4 +15,24 @@ export class CatService {
       userId: userId
     })
   }
+
+
+  public async getCatById(id: number): Promise<catDTO | null> {
+    const cat = await this.catRepo.findById(id);
+
+    if (!cat) {
+      return null;
+    }
+
+    return cat;
+  }
+
+
+  public async getNearbyCats(lat: number, lon: number, radius: number) {
+    const cats = await this.catRepo.findInRadius(lat, lon, radius);
+
+    return cats;
+  }
+
+
 }

@@ -4,7 +4,7 @@ import { type SearchProps } from "../interfaces/SearchProps"
 
 const Searchbar = ({ onSearch }: SearchProps) => {
   const [searchQuery, setSearchQuery] = useState("");
-  
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log("Form inviato, query:", searchQuery); // Debug
@@ -15,7 +15,7 @@ const Searchbar = ({ onSearch }: SearchProps) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex items-center w-full h-1/2 bg-white/80 backdrop-blur-md border border-amber-300 rounded-full shadow-sm">
+    <form onSubmit={handleSubmit} className="flex items-center w-full h-10 bg-white/80 backdrop-blur-md border border-amber-300 rounded-full shadow-sm">
       <input
         type="text"
         value={searchQuery}
@@ -26,7 +26,7 @@ const Searchbar = ({ onSearch }: SearchProps) => {
         placeholder="Search for a place..."
         className="flex-1 px-4 py-2 bg-transparent focus:outline-none text-gray-700 placeholder-gray-500"
       />
-      <button 
+      <button
         type="submit"
         className="bg-amber-400 hover:bg-amber-500 w-12 h-10 text-white rounded-r-full flex items-center justify-center border border-amber-300 transition-colors"
       >

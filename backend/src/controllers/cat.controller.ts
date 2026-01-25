@@ -16,16 +16,42 @@ export class CatController {
       if (!photoPath) {
         res.status(400).json({
           message: "There must be a photo of the cat"
-        })
-        return
+        });
+        return;
       }
 
-      const newCat = await this.catService.createNewCat(req.body, userId, photoPath);
+      // Estraiamo e convertiamo esplicitamente le coordinate
+      const catData = {
+        ...req.body,
+        latitude: parseFloat(req.body.latitude),
+        longitude: parseFloat(req.body.longitude)
+      };
+
+      // Ora passiamo l'oggetto con i numeri reali al servizio
+      const newCat = await this.catService.createNewCat(catData, userId, photoPath);
+
       res.status(201).json(newCat);
     } catch (error: any) {
       res.status(500).json({
         message: error.message
       });
+    }
+  }
+
+
+  public async getCatDetails(req: Request, res: Response): Promise<void> {
+    try {
+      const { id } = req.params;
+      const cat = await this.catService.getCatById(parseInt(id as string));
+
+      if (!cat) {
+        res.status(404).json({ message: "Gatto non trovato" });
+        return;
+      }
+
+      res.status(200).json(cat);
+    } catch (error: any) {
+      res.status(500).json({ message: error.message });
     }
   }
 
@@ -36,7 +62,7 @@ export class CatController {
       const lon = Number(req.query.lon);
       const radius = Number(req.query.radius || 10);
 
-      const cats = await this.catService.getNearby(lat, lon, radius);
+      const cats = await this.catService.getNearbyCats(lat, lon, radius);
       res.status(200).json(cats);
     } catch (error: any) {
       res.status(500).json({

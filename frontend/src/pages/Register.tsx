@@ -61,9 +61,6 @@ const Register = () => {
       const { token, user } = res.data;
 
       if (token && user) {
-        localStorage.setItem("token", token);
-        localStorage.setItem("user", JSON.stringify(user));
-        login(user);
         navigate("/home");
       }
     } catch (err: any) {

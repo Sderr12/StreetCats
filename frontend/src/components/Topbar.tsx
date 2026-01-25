@@ -16,7 +16,7 @@ const Topbar = () => {
   }
 
   return (
-    <div className='h-16 w-full fixed top-0 left-0 bg-white border-b border-b-gray-300 shadow-md z-50 grid grid-cols-3 items-center px-6'>
+    <div className='h-16 w-full fixed top-0 left-0 bg-white border-b dark:border-b-gray-800 border-b-gray-300 shadow-md z-50 grid grid-cols-3 items-center px-6 dark:bg-slate-900'>
       {/* Logo a sinistra */}
       <div className="flex items-center gap-3 cursor-pointer justify-start" onClick={() => navigate("/home")}>
         <img src={logo} alt="Logo" className="h-10" />
@@ -24,7 +24,7 @@ const Topbar = () => {
       </div>
 
       {/* Menu centrale - solo desktop */}
-      <div className="hidden lg:flex items-center gap-8 text-lg text-black font-medium justify-center">
+      <div className="hidden lg:flex items-center gap-8 text-lg text-black dark:text-white font-medium justify-center">
         <button
           className="hover:text-amber-400 transition-colors"
           onClick={() => navigate("/home")}

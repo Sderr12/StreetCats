@@ -6,6 +6,9 @@ import { AuthRoute } from "./routes/auth.js";
 import { AuthController } from "./controllers/auth.controller.js";
 import { RepoFactory } from "./factory/RepoFactory.js";
 import path from "path";
+import { CatService } from "./services/cat.service.js";
+import { CatController } from "./controllers/cat.controller.js";
+import { CatRoute } from "./routes/cat.route.js";
 
 
 dotenv.config();
@@ -28,24 +31,30 @@ class App {
   }
 
   private initRoutes() {
-    const { authService } = this.initServices();
+    const { authService, catService } = this.initServices();
     const authController = new AuthController(authService);
+    const catController = new CatController(catService);
     const authRoute = new AuthRoute(authController);
+    const catRoute = new CatRoute(catController);
+
 
     this.app.use("/auth", authRoute.router);
+    this.app.use("/cats", catRoute.router);
   }
 
   private initServices() {
-    const { userRepo } = this.initRepo();
+    const { userRepo, catRepo } = this.initRepo();
     const authService = new AuthService(userRepo);
-    return { authService };
+    const catService = new CatService(catRepo);
+    return { authService, catService };
   }
 
   private initRepo() {
     const factory = new RepoFactory();
-    const repoType = process.env.REPO_TYPE ?? "prisma";
+    const repoType = process.env.REPO_TYPE ?? "Prisma";
     const userRepo = factory.getUserRepo(repoType);
-    return { userRepo };
+    const catRepo = factory.getCatRepo(repoType);
+    return { userRepo, catRepo };
   }
 
   private init() {
