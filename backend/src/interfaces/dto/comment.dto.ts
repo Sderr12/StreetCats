@@ -4,8 +4,10 @@ export type CreateComment = {
 
 
 export type commentDTO = CreateComment & {
+  id: number,
   user: {
     username: string;
     avatarUrl: string | null;
   }
+  createdAt: string;
 }

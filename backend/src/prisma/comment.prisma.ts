@@ -6,13 +6,23 @@ export class CommentPrisma implements CommentRepository {
 
 
   async findByCatId(catId: number): Promise<commentDTO[]> {
-    return await prisma.comment.findMany({
+    const comments = await prisma.comment.findMany({
       where: { catId },
       include: {
         user: { select: { username: true, avatarUrl: true } }
       },
       orderBy: { createdAt: 'desc' }
     })
+
+    return comments.map(c => ({
+      id: c.id,
+      content: c.content,
+      createdAt: c.createdAt.toISOString(),
+      user: {
+        username: c.user.username,
+        avatarUrl: c.user.avatarUrl
+      }
+    }))
   }
 
 
@@ -34,11 +44,13 @@ export class CommentPrisma implements CommentRepository {
     })
 
     return {
+      id: prismaComment.id,
       content: prismaComment.content,
       user: {
         username: prismaComment.user.username,
         avatarUrl: prismaComment.user.avatarUrl
-      }
+      },
+      createdAt: prismaComment.createdAt.toISOString()
     }
   }
 }

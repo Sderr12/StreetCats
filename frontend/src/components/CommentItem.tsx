@@ -18,7 +18,7 @@ const CommentItem = (comment: Comment) => {
           </p>
         </div>
         <p className="text-xs text-gray-500 dark:text-slate-500 mt-2 ml-4">
-          {new Date(comment.createdAt).toLocaleDateString()}
+          {comment.createdAt}
         </p>
       </div>
     </div>
