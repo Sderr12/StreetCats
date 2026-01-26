@@ -37,10 +37,5 @@ export class CatRoute extends Route {
       (req: Request, res: Response) => this.catController.getCatDetails(req, res)
     );
 
-
-    this.router.get('/:id/comments', (req, res) => {
-      // Per ora restituiamo un array vuoto così il frontend non crasha
-      res.status(200).json([]);
-    });
   }
 }

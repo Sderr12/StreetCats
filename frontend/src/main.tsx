@@ -15,6 +15,10 @@ import CatDetails from './pages/CatDetails.tsx'
 import AddCat from './pages/AddCat.tsx'
 import AuthLayout from './pages/AuthLayout.tsx'
 import Register from './pages/Register.tsx'
+import { ThemeProvider } from './context/ThemeProvider.tsx'
+
+
+document.documentElement.classList.add("dark")
 
 const router = createBrowserRouter([
   {
@@ -32,7 +36,7 @@ const router = createBrowserRouter([
 
           {
             path: "/home",
-            element: <Home/>
+            element: <Home />
           },
 
           {
@@ -87,8 +91,10 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <AuthProvider>
-      <RouterProvider router={router} />
-    </AuthProvider>
+    <ThemeProvider>
+      <AuthProvider>
+        <RouterProvider router={router} />
+      </AuthProvider>
+    </ThemeProvider>
   </StrictMode>,
 )

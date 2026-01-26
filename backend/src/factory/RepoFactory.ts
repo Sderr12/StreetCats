@@ -1,6 +1,8 @@
 import type { CatRepository } from "../interfaces/repositories/cat.repository.js";
+import type { CommentRepository } from "../interfaces/repositories/comment.repository.js";
 import type { UserRepository } from "../interfaces/repositories/user.repository.js";
 import { catPrisma } from "../prisma/cat.prisma.js";
+import { CommentPrisma } from "../prisma/comment.prisma.js";
 import { userPrisma } from "../prisma/user.prisma.js";
 
 export class RepoFactory {
@@ -16,6 +18,12 @@ export class RepoFactory {
     if (type == "Prisma") {
       return new catPrisma();
     }
+
+    throw new Error(`Repo of type ${type} not found`);
+  }
+
+  public getCommentRepo(type: string): CommentRepository {
+    if (type == "Prisma") return new CommentPrisma();
 
     throw new Error(`Repo of type ${type} not found`);
   }

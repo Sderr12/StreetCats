@@ -25,7 +25,7 @@ const Bottombar = () => {
         onClick={() => navigate("/map")}
       >
         <FaMap className="text-amber-400 h-6 w-6"></FaMap>
-        <span className="text-xs font-medium text-white">Map</span>
+        <span className="text-xs font-medium dark:text-white">Map</span>
       </button>
 
       <button

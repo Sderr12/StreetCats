@@ -3,6 +3,7 @@ import logo from '../assets/onlycat-removebg-preview.png';
 import { AuthContext } from "../context/AuthProvider";
 import { useContext } from "react";
 import Avatar from "./Avatar";
+import ThemeToggle from "../components/DarkModeToggle.tsx"
 
 const Topbar = () => {
   const navigate = useNavigate();
@@ -21,6 +22,7 @@ const Topbar = () => {
       <div className="flex items-center gap-3 cursor-pointer justify-start" onClick={() => navigate("/home")}>
         <img src={logo} alt="Logo" className="h-10" />
         <span className="hidden md:inline text-2xl text-amber-300 text-opacity-80 font-semibold">StreetCats</span>
+        <ThemeToggle></ThemeToggle>
       </div>
 
       {/* Menu centrale - solo desktop */}

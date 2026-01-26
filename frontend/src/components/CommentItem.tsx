@@ -1,4 +1,3 @@
-import React from 'react';
 import type { Comment } from "../interfaces/Comment.ts"
 
 const CommentItem = (comment: Comment) => {

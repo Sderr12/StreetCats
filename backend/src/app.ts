@@ -9,6 +9,9 @@ import path from "path";
 import { CatService } from "./services/cat.service.js";
 import { CatController } from "./controllers/cat.controller.js";
 import { CatRoute } from "./routes/cat.route.js";
+import { CommentController } from "./controllers/comment.controller.js";
+import { CommentService } from "./services/comment.service.js";
+import { CommentRoute } from "./routes/comment.route.js";
 
 
 dotenv.config();
@@ -31,22 +34,26 @@ class App {
   }
 
   private initRoutes() {
-    const { authService, catService } = this.initServices();
+    const { authService, catService, commentService } = this.initServices();
     const authController = new AuthController(authService);
     const catController = new CatController(catService);
+    const commentController = new CommentController(commentService);
     const authRoute = new AuthRoute(authController);
     const catRoute = new CatRoute(catController);
+    const commentRoute = new CommentRoute(commentController);
 
 
     this.app.use("/auth", authRoute.router);
     this.app.use("/cats", catRoute.router);
+    this.app.use("/cats", commentRoute.router)
   }
 
   private initServices() {
-    const { userRepo, catRepo } = this.initRepo();
+    const { userRepo, catRepo, commentRepo } = this.initRepo();
     const authService = new AuthService(userRepo);
     const catService = new CatService(catRepo);
-    return { authService, catService };
+    const commentService = new CommentService(commentRepo);
+    return { authService, catService, commentService };
   }
 
   private initRepo() {
@@ -54,7 +61,8 @@ class App {
     const repoType = process.env.REPO_TYPE ?? "Prisma";
     const userRepo = factory.getUserRepo(repoType);
     const catRepo = factory.getCatRepo(repoType);
-    return { userRepo, catRepo };
+    const commentRepo = factory.getCommentRepo(repoType);
+    return { userRepo, catRepo, commentRepo };
   }
 
   private init() {
