@@ -13,7 +13,7 @@ export class CommentController {
   public async postComment(req: any, res: Response): Promise<void> {
     try {
       const catId = parseInt(req.params.id as string);
-      const userId = parseInt(req.user.id as string);
+      const userId = parseInt(res.locals.id as string);
 
       const input: CreateComment = req.body;
 
