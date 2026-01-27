@@ -43,6 +43,12 @@ The project aims to create an innovative and user-friendly website.
 - **Community Interaction & Engagement**:
   - **Comments**: users can post and read comments on cat's profile.
 
+# Preview
+<div style="display: flex; gap: 10px;">
+  <img src="./img/light-mode-home.png" width="45%" />
+  <img src="./img/dark-mode-home.png" width="45%" />
+</div>
+
 # How to execute
 The project is built using **ReactTS** and **Vite**. To run it locally, make sure you have **Node.js** and **npm** (or **yarn**/**pnpm**) installed.
 Clone the repository with:
