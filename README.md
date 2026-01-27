@@ -35,7 +35,6 @@
 StreetCats is a University project by Federico II, focused on developing a web platform to help regular people spotting stray cats. 
 The project aims to create an innovative and user-friendly website.
 
-
 # Key Features
 - **User Authentication & Authorization**
 - **Public Discovery & Exploration**:
@@ -45,19 +44,19 @@ The project aims to create an innovative and user-friendly website.
   - **Comments**: users can post and read comments on cat's profile.
 
 # How to execute
-The project is built using **ReactTS** and **Vite**. To run it locally, make sure you have **Node.js** and **npm** (or **yarn**/**pnpm**) installed. Then you can follow these steps:
-### Frontend
-1. Clone the repository
+The project is built using **ReactTS** and **Vite**. To run it locally, make sure you have **Node.js** and **npm** (or **yarn**/**pnpm**) installed.
+Clone the repository with:
 ```sh
 git clone https://github.com/Sderr12/StreetCats.git
 ```
-2. Navigate into the project folder
+Then you can follow these steps:
+### Frontend
+1. Navigate into the project folder
 ```sh
 cd ~/StreetCats/frontend/
 ```
-3. Install all dependencies
+2. Install all dependencies
 ```sh
-
 # Using npm
 npm install
 
@@ -67,7 +66,7 @@ yarn install
 # Using pnpm
 pnpm install
 ```
-4. Run the development server
+3. Run the development server
 ```sh
 # Using npm
 npm run dev
@@ -96,7 +95,33 @@ and preview it locally using:
 npm run preview
 ```
 ### Backend
+1. Navigate into the backend folder
+```sh
+cd ~/StreetCats/backend/
+```
+2. Install all dependencies
+```sh
 
+# Using npm
+npm install
+
+# Using yarn
+yarn install
+
+# Using pnpm
+pnpm install
+```
+4. Run the development server
+```sh
+# Using npm
+npm run dev
+
+# Using yarn
+yarn run dev
+
+# Using pnpm
+pnpm run dev
+```
 # Tested on
 <p>
   <a href="https://zen-browser.app/" title="Zen Browser">
