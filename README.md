@@ -20,7 +20,11 @@
   <a href="https://tailwindcss.com/">
     <img src="https://img.shields.io/badge/TailwindCSS-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white" alt="TailwindCSS Badge"/>
   </a>
+  <a href="https://www.prisma.io/">
+    <img src="https://img.shields.io/badge/Prisma-2D3748?style=for-the-badge&logo=prisma&logoColor=white" alt="Prisma Badge"/>
+  </a>
 </p>
+
 
 
 # Contents
