@@ -49,7 +49,7 @@ The project aims to create an innovative and user-friendly website.
 
 # Preview
 <div style="display: flex; gap: 10px;">
-  <img src="./img/light-mode-home.png" width="45%" />
+  <img src="./img/light-home-page.png" width="45%" />
   <img src="./img/dark-mode-home.png" width="45%" />
 </div>
 
