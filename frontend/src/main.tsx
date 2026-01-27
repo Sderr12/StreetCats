@@ -16,6 +16,7 @@ import AddCat from './pages/AddCat.tsx'
 import AuthLayout from './pages/AuthLayout.tsx'
 import Register from './pages/Register.tsx'
 import { ThemeProvider } from './context/ThemeProvider.tsx'
+import NotFoundPage from './pages/PageNotFound.tsx'
 
 
 document.documentElement.classList.add("dark")
@@ -33,12 +34,10 @@ const router = createBrowserRouter([
             path: "",
             element: <Navigate to="/home" replace />
           },
-
           {
             path: "/home",
             element: <Home />
           },
-
           {
             path: "/map",
             element: <Map />
@@ -51,19 +50,16 @@ const router = createBrowserRouter([
               </ProtectedRoute>
             )
           },
-
           {
             path: "/spottest",
             element: <AddCat />
           },
-
           {
             path: "/catdetails/:id",
             element: <CatDetails />
           }
         ]
       },
-
       {
         path: "",
         element: <AuthLayout />,
@@ -72,18 +68,19 @@ const router = createBrowserRouter([
             path: "/login",
             element: <Login />
           },
-
           {
             path: "/register",
             element: <Register />
           }
         ]
       },
-
-
       {
         path: "/test",
         element: <Testpage />
+      },
+      {
+        path: "*",
+        element: <NotFoundPage />
       }
     ]
   }

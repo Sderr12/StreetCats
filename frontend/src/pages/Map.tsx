@@ -16,10 +16,10 @@ const catIcon = new L.Icon({
 });
 
 const userIcon = new L.Icon({
-  iconUrl: "https://cdn-icons-png.flaticon.com/512/709/709612.png",
-  iconSize: [40, 40],
-  iconAnchor: [20, 40],
-  popupAnchor: [0, -40],
+  iconUrl: "https://cdn-icons-png.flaticon.com/512/219/219983.png",
+  iconSize: [45, 45],
+  iconAnchor: [22, 45],
+  popupAnchor: [0, -45],
 });
 
 const MapEvents = ({ onCenterChange }: { onCenterChange: (lat: number, lng: number) => void }) => {

@@ -15,21 +15,21 @@ const Login = () => {
 
   const loginSchema = Yup.object().shape({
     email: Yup.string()
-      .email("Email non valida")
-      .required("L'email è obbligatoria"),
+      .email("Email not valid")
+      .required("There must be an email"),
     password: Yup.string()
-      .min(5, "La password deve avere almeno 5 caratteri")
-      .required("La password è obbligatoria"),
+      .min(5, "Password must have 5 characters")
+      .required("There must be a password"),
   });
 
   return (
-    <div className="w-full max-w-md mx-auto p-6 bg-white rounded-3xl shadow-xl border border-gray-100">
+    <div className="w-full max-w-md mx-auto p-6 bg-white rounded-3xl shadow-xl border border-gray-100 dark:bg-slate-800">
       <div className="text-center mb-10">
-        <h1 className="text-3xl font-extrabold text-gray-800">
+        <h1 className="text-3xl font-extrabold text-gray-800 dark:text-white">
           Street<span className="text-amber-400">Cats</span>
         </h1>
         <p className="text-gray-400 text-xs uppercase tracking-widest font-bold mt-1">
-          Accesso Comandante
+          Login
         </p>
       </div>
 
@@ -100,7 +100,7 @@ const Login = () => {
                   CARICAMENTO...
                 </span>
               ) : (
-                "ACCEDI"
+                "LOGIN"
               )}
             </button>
           </Form>
@@ -108,10 +108,10 @@ const Login = () => {
       </Formik>
 
       <div className="mt-8 text-center">
-        <p className="text-sm text-gray-500">
-          Non sei ancora dei nostri?{" "}
+        <p className="text-sm text-gray-500 dark:text-white">
+          Aren't you one of us yet?{" "}
           <Link to="/register" className="text-amber-500 font-bold hover:text-orange-500 transition-colors">
-            Registrati ora
+            Register now!
           </Link>
         </p>
       </div>

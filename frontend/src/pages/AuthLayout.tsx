@@ -35,7 +35,7 @@ const AuthLayout = () => {
   const location = useLocation()
 
   return (
-    <div className="min-h-screen w-full flex flex-col items-center justify-start bg-gray-100 px-4 py-2 overflow-y-auto">
+    <div className="min-h-screen w-full flex flex-col items-center justify-start bg-gray-100 px-4 py-2 overflow-y-auto dark:bg-slate-800">
 
       <AnimatePresence mode="wait">
         <motion.div
@@ -44,10 +44,8 @@ const AuthLayout = () => {
           initial="initial"
           animate="animate"
           exit="exit"
-          // rimosso 'absolute', aggiunto 'my-auto' per centrare se c'è spazio
-          className="bg-white rounded-3xl shadow-2xl p-8 w-full max-w-md border border-gray-100 flex flex-col items-center my-auto"
+          className="bg-white rounded-3xl shadow-2xl p-8 w-full max-w-md border border-gray-100 flex flex-col items-center my-auto dark:bg-slate-800"
         >
-          {/* Logo con dimensioni fisse e non percentuali */}
           <div className="w-24 mb-6 flex justify-center">
             <img src={logo} alt="Logo" className="w-full h-auto" />
           </div>

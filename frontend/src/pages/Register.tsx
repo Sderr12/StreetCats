@@ -83,9 +83,9 @@ const Register = () => {
         onSubmit={handleSubmit}
       >
         {({ setFieldValue, isSubmitting, errors, touched }) => (
-          <Form className="space-y-4">
+          <Form className="space-y-4 dark:text-white">
             <div>
-              <label htmlFor="username" className="block text-xs font-semibold text-gray-700 mb-1">
+              <label htmlFor="username" className="block text-xs font-semibold text-gray-700 mb-1 dark:text-white">
                 Username
               </label>
               <div className="relative">
@@ -93,7 +93,7 @@ const Register = () => {
                   id="username"
                   name="username"
                   placeholder="Username"
-                  className={`w-full pl-4 pr-4 py-2.5 text-sm border-2 rounded-xl focus:outline-none focus:ring-2 transition-all ${errors.username && touched.username ? 'border-red-300 focus:ring-red-400' : 'border-gray-200 focus:ring-amber-400'
+                  className={`w-full pl-4 pr-4 py-2.5 text-sm border-2 dark:text-white rounded-xl focus:outline-none focus:ring-2 transition-all ${errors.username && touched.username ? 'border-red-300 focus:ring-red-400' : 'border-gray-200 focus:ring-amber-400'
                     }`}
                 />
               </div>
@@ -101,7 +101,7 @@ const Register = () => {
             </div>
 
             <div>
-              <label htmlFor="email" className="block text-xs font-semibold text-gray-700 mb-1">
+              <label htmlFor="email" className="block text-xs font-semibold text-gray-700 mb-1 dark:text-white">
                 Email
               </label>
               <Field
@@ -116,7 +116,7 @@ const Register = () => {
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-xs font-semibold text-gray-700 mb-1">
+              <label htmlFor="password" className="block text-xs font-semibold text-gray-700 mb-1 dark:text-white">
                 Password
               </label>
               <Field

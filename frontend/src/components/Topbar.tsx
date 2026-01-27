@@ -22,7 +22,6 @@ const Topbar = () => {
       <div className="flex items-center gap-3 cursor-pointer justify-start" onClick={() => navigate("/home")}>
         <img src={logo} alt="Logo" className="h-10" />
         <span className="hidden md:inline text-2xl text-amber-300 text-opacity-80 font-semibold">StreetCats</span>
-        <ThemeToggle></ThemeToggle>
       </div>
 
       {/* Menu centrale - solo desktop */}
@@ -47,7 +46,6 @@ const Topbar = () => {
         </button>
       </div>
 
-      {/* Spazio vuoto centrale su mobile */}
       <div className="lg:hidden"></div>
 
       {/* Profilo a destra */}
@@ -62,7 +60,7 @@ const Topbar = () => {
         ) : (
           <button
             onClick={() => navigate("/login")}
-            className="px-4 py-2 bg-amber-400 hover:bg-amber-500 text-white font-semibold rounded-lg transition-colors text-sm"
+            className="px-4 py-2 bg-[#a6ba28] hover:bg-[#81941c] text-white font-semibold rounded-lg transition-colors text-sm"
           >
             Login
           </button>

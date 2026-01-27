@@ -13,6 +13,7 @@ const CatDetailPage = () => {
 
   const [cat, setCat] = useState<any>(null);
   const [comments, setComments] = useState<any[]>([]);
+  const [cityName, setCityName] = useState<string>("Loading position...");
   const [newComment, setNewComment] = useState("");
   const [loading, setLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -26,25 +27,45 @@ const CatDetailPage = () => {
         ]);
 
         if (catRes.data) {
-          // Formattiamo la data del gatto subito per l'header
-          const formattedCatDate = catRes.data.createdAt
-            ? new Date(catRes.data.createdAt).toLocaleDateString('it-IT', {
+          const catData = catRes.data;
+
+          // Reverse geocoding
+          try {
+            const geoRes = await axios.get('https://nominatim.openstreetmap.org/reverse', {
+              params: {
+                format: 'jsonv2',
+                lat: catData.latitude,
+                lon: catData.longitude,
+                'accept-language': 'it'
+              }
+            });
+            const address = geoRes.data.address;
+            const city = address.city || address.town || address.village || address.suburb || "Località ignota";
+            setCityName(city);
+          } catch (geoErr) {
+            console.error("Error Geocoding:", geoErr);
+            setCityName("Position not found");
+          }
+          // --------------------------------
+
+          const formattedCatDate = catData.createdAt
+            ? new Date(catData.createdAt).toLocaleDateString('it-IT', {
               day: 'numeric', month: 'long', year: 'numeric'
             })
-            : "Data non disponibile";
+            : "Date not available";
 
           setCat({
-            ...catRes.data,
-            displayImage: catRes.data.photo.startsWith('http')
-              ? catRes.data.photo
-              : `http://localhost:3000/${catRes.data.photo}`,
+            ...catData,
+            displayImage: catData.photo.startsWith('http')
+              ? catData.photo
+              : `http://localhost:3000/${catData.photo}`,
             date: formattedCatDate
           });
         }
 
         setComments(commentsRes.data);
       } catch (err) {
-        console.error("Errore nel recupero dati, Supremo Leader:", err);
+        console.error("Error during data recovering:", err);
       } finally {
         setLoading(false);
       }
@@ -67,8 +88,8 @@ const CatDetailPage = () => {
       setComments([res.data, ...comments]);
       setNewComment("");
     } catch (err) {
-      console.error("Errore invio:", err);
-      alert("Impossibile inviare il commento.");
+      console.error("Error during submit:", err);
+      alert("Impossible to sumbit comment.");
     } finally {
       setIsSubmitting(false);
     }
@@ -93,7 +114,7 @@ const CatDetailPage = () => {
 
         <button onClick={() => navigate(-1)} className="flex items-center gap-2 text-gray-600 dark:text-slate-400 hover:text-orange-500 mb-6 transition-colors group">
           <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
-          <span className="font-medium">Torna indietro</span>
+          <span className="font-medium">Go back</span>
         </button>
 
         <article className="bg-white dark:bg-slate-900 rounded-[2.5rem] shadow-2xl overflow-hidden border border-gray-100 dark:border-slate-800">
@@ -111,7 +132,7 @@ const CatDetailPage = () => {
               <div className="flex items-center gap-3 bg-orange-50 dark:bg-orange-900/20 px-4 py-2 rounded-full">
                 <MapPin size={20} className="text-orange-500" />
                 <span className="text-orange-700 dark:text-orange-300 font-semibold text-sm">
-                  {cat.latitude?.toFixed(4)}, {cat.longitude?.toFixed(4)}
+                  {cityName}
                 </span>
               </div>
               <div className="flex items-center gap-3 bg-blue-50 dark:bg-blue-900/20 px-4 py-2 rounded-full">
@@ -123,7 +144,8 @@ const CatDetailPage = () => {
             </div>
 
             <section className="mb-12">
-              <div className="prose dark:prose-invert max-w-none text-gray-700 dark:text-slate-300 leading-relaxed text-lg">
+              <span className='text-white bg-orange-400 rounded-2xl text-2xl font-extrabold p-2'> Description </span>
+              <div className="prose dark:prose-invert max-w-none text-gray-700 dark:text-slate-300 leading-relaxed text-lg p-2 mt-3">
                 <ReactMarkdown>{cat.description}</ReactMarkdown>
               </div>
             </section>
@@ -141,7 +163,7 @@ const CatDetailPage = () => {
                   <textarea
                     value={newComment}
                     onChange={(e) => setNewComment(e.target.value)}
-                    placeholder="Lascia un commento..."
+                    placeholder="Leave a comment..."
                     className="w-full bg-gray-50 dark:bg-slate-800 rounded-2xl p-4 border-none focus:ring-2 focus:ring-orange-500 dark:text-white outline-none transition-all resize-none"
                     rows={3}
                   />
@@ -151,19 +173,18 @@ const CatDetailPage = () => {
                       className="bg-orange-500 text-white px-6 py-2 rounded-xl flex items-center gap-2 hover:bg-orange-600 transition-colors disabled:opacity-50"
                     >
                       {isSubmitting ? <Loader2 className="animate-spin" size={18} /> : <Send size={18} />}
-                      Invia Commento
+                      Submit
                     </button>
                   </div>
                 </form>
               ) : (
                 <div className="mb-10 p-4 bg-gray-100 dark:bg-slate-800 rounded-2xl text-center text-gray-500">
-                  Devi essere loggato per commentare.
+                  Login to comment!.
                 </div>
               )}
 
               <div className="space-y-6">
                 {comments.map((c) => {
-                  // LOGICA DATA SICURA
                   const dateToParse = c.createdAt || new Date().toISOString();
                   const dateObj = new Date(dateToParse);
 
