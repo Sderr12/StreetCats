@@ -48,7 +48,7 @@ The project aims to create an innovative and user-friendly website.
   - **Comments**: users can post and read comments on cat's profile.
 
 # Preview
-<div style="display: flex; gap: 10px;">
+<div align="center"; style="display: flex; gap: 10px;">
   <img src="./img/light-home-page.png" width="45%" />
   <img src="./img/dark-mode-home.png" width="45%" />
 </div>
