@@ -1,0 +1,9 @@
+{
+  "user": {
+    "id": 1,
+    "username": "testingUser",
+    "email": "testingUser@email.it",
+    "password": "12345"
+  },
+  "token": "secret-invalid-token-12345"
+}
