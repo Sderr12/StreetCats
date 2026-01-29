@@ -23,7 +23,7 @@ const Login = () => {
   });
 
   return (
-    <div className="w-full max-w-md mx-auto p-6 bg-white rounded-3xl shadow-xl border border-gray-100 dark:bg-slate-800">
+    <div className="w-full max-w-md mx-auto p-6 bg-white rounded-3xl shadow-xl dark:bg-slate-800">
       <div className="text-center mb-10">
         <h1 className="text-3xl font-extrabold text-gray-800 dark:text-white">
           Street<span className="text-amber-400">Cats</span>
@@ -67,7 +67,7 @@ const Login = () => {
                 placeholder="Email"
                 className={`w-full px-4 py-3 border-2 rounded-2xl focus:outline-none transition-all ${errors.email && touched.email
                   ? "border-red-300 bg-red-50"
-                  : "border-gray-100 focus:border-amber-400 bg-gray-50"
+                  : "border-gray-100 focus:border-amber-400 dark:text-white"
                   }`}
               />
               <ErrorMessage name="email" component="div" className="text-red-500 text-xs mt-1 ml-2 font-medium" />
@@ -80,7 +80,7 @@ const Login = () => {
                 placeholder="Password"
                 className={`w-full px-4 py-3 border-2 rounded-2xl focus:outline-none transition-all ${errors.password && touched.password
                   ? "border-red-300 bg-red-50"
-                  : "border-gray-100 focus:border-amber-400 bg-gray-50"
+                  : "border-gray-100 focus:border-amber-400 dark:text-white"
                   }`}
               />
               <ErrorMessage name="password" component="div" className="text-red-500 text-xs mt-1 ml-2 font-medium" />

@@ -69,11 +69,11 @@ describe("Testing", () => {
 
     cy.get('textarea[name="description"]').type('Un gatto molto **coraggioso** trovato vicino al Colosseo.');
 
-    cy.contains('button', 'Anteprima').click();
+    cy.contains('button', 'Preview').click();
     cy.get('.prose strong').should('have.text', 'coraggioso');
-    cy.contains('button', 'Scrivi').click();
+    cy.contains('button', 'Write').click();
 
-    cy.contains('button', 'Pubblica Avvistamento').click();
+    cy.contains('button', 'Publish Sighting').click();
 
 
     cy.url().should('include', '/catdetails/999');
@@ -92,9 +92,9 @@ describe("Testing", () => {
 
     cy.get('textarea[name="description"]').type('Thi cat is just a test');
 
-    cy.contains('button', 'Pubblica Avvistamento').click();
+    cy.contains('button', 'Publish Sighting').click();
 
-    cy.contains("There must be a photo!")
+    cy.contains("A photo is required!")
       .should('be.visible');
 
     cy.url().should('include', '/spot');

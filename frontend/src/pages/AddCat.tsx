@@ -12,7 +12,6 @@ import { useNavigate } from "react-router-dom"
 import markerIcon from 'leaflet/dist/images/marker-icon.png';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 
-
 let DefaultIcon = L.icon({
   iconUrl: markerIcon,
   shadowUrl: markerShadow,
@@ -22,11 +21,11 @@ let DefaultIcon = L.icon({
 L.Marker.prototype.options.icon = DefaultIcon;
 
 const CatSchema = Yup.object().shape({
-  title: Yup.string().min(3, 'Titolo troppo breve').required('Il titolo è obbligatorio'),
-  description: Yup.string().min(10, 'Sii più descrittivo!').required('La descrizione è obbligatoria'),
-  latitude: Yup.number().required('Seleziona un punto sulla mappa'),
+  title: Yup.string().min(3, 'Title is too short').required('Title is required'),
+  description: Yup.string().min(10, 'Add more details!').required('Description is required'),
+  latitude: Yup.number().required('Mark where the cat is'),
   longitude: Yup.number().required(),
-  image: Yup.mixed().required('There must be a photo!')
+  image: Yup.mixed().required('A photo is required!')
 });
 
 const AddCat = () => {
@@ -64,7 +63,6 @@ const AddCat = () => {
         data.append('latitude', values.latitude.toString());
         data.append('longitude', values.longitude.toString());
 
-        // Assicuriamoci che il nome coincida con quello che il backend aspetta: 'photo'
         if (values.image) {
           data.append('photo', values.image);
         }
@@ -72,18 +70,16 @@ const AddCat = () => {
         const response = await axios.post('/cats', data, {
           headers: {
             'Content-Type': 'multipart/form-data',
-            // Recuperiamo il token salvato al login/register
             'Authorization': `Bearer ${localStorage.getItem('streetcats_token')}`
           }
         });
 
         if (response.status === 201) {
-          // Successo! Portiamo il Supremo Leader a vedere il gatto appena creato
           navigate(`/catdetails/${response.data.id}`);
         }
       } catch (error: any) {
-        console.error("Errore nell'invio:", error);
-        alert(error.response?.data?.message || "C'è stato un errore nel caricamento del gatto.");
+        console.error("Error", error);
+        alert(error.response?.data?.message || "An error has occurred");
       } finally {
         setSubmitting(false);
       }
@@ -105,7 +101,7 @@ const AddCat = () => {
     const text = formik.values.description;
     const before = text.substring(0, start);
     const after = text.substring(end);
-    const selectedText = text.substring(start, end) || "testo";
+    const selectedText = text.substring(start, end) || "text";
 
     let newText = "";
     if (syntax === 'bold') newText = `${before}**${selectedText}**${after}`;
@@ -116,23 +112,23 @@ const AddCat = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-12 py-10 overflow-y-scroll">
+    <div className="min-h-screen bg-gray-50 pb-12 py-10 dark:bg-slate-800">
       <div className="max-w-3xl mx-auto px-4 pt-8">
         <form onSubmit={formik.handleSubmit} className="space-y-6">
 
-          {/* UPLOAD FOTO */}
-          <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-            <label className="block text-sm font-semibold text-gray-700 mb-4 text-left">Fotografia del Gatto</label>
+          {/* PHOTO UPLOAD */}
+          <div className="dark:bg-slate-600 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+            <label className="block text-sm font-semibold text-gray-700 mb-4 text-left dark:text-white">Cat Photo</label>
             <div
               onClick={() => fileInputRef.current?.click()}
-              className={`relative aspect-video rounded-xl border-2 border-dashed flex flex-col items-center justify-center cursor-pointer transition-colors overflow-hidden ${formik.errors.image ? 'border-red-400 bg-red-50' : 'border-gray-300 bg-gray-50 hover:border-orange-400'}`}
+              className={`relative aspect-video rounded-xl border-2 border-dashed flex flex-col items-center justify-center cursor-pointer transition-colors overflow-hidden dark:bg-slate-600 ${formik.errors.image ? 'border-red-400 bg-red-50' : 'border-gray-300 bg-gray-50 hover:border-orange-400'}`}
             >
               {imagePreview ? (
                 <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
               ) : (
                 <>
                   <Camera className="text-gray-400 mb-2" size={32} />
-                  <span className="text-sm text-gray-500">Click per caricare una foto</span>
+                  <span className="text-sm text-gray-500">Click to upload a photo</span>
                 </>
               )}
               <input type="file" ref={fileInputRef} onChange={handleImageChange} className="hidden" accept="image/*" />
@@ -140,22 +136,22 @@ const AddCat = () => {
             {formik.errors.image && <p className="text-red-500 text-xs mt-2 text-left">{formik.errors.image as string}</p>}
           </div>
 
-          {/* TITOLO E MAPPA */}
-          <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 space-y-4">
+          <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 space-y-4 dark:bg-slate-600">
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2 text-left">Titolo</label>
+              <label className="block text-sm font-semibold text-gray-700 mb-2 text-left dark:text-white">Title</label>
               <input
                 name="title"
                 type="text"
                 className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-orange-500 outline-none"
                 onChange={formik.handleChange}
                 value={formik.values.title}
+                placeholder="Give this kitty a title"
               />
               {formik.touched.title && formik.errors.title && <p className="text-red-500 text-xs mt-1 text-left">{formik.errors.title}</p>}
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2 text-left">Posizione (Clicca sulla mappa)</label>
+              <label className="block text-sm font-semibold text-gray-700 mb-2 text-left dark:text-white">Location (Click on the map)</label>
               <div className="rounded-xl h-64 overflow-hidden border border-gray-200 z-0 relative">
                 <MapContainer center={[formik.values.latitude, formik.values.longitude]} zoom={13} style={{ height: '100%', width: '100%' }}>
                   <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
@@ -166,22 +162,25 @@ const AddCat = () => {
             </div>
           </div>
 
-          {/* DESCRIZIONE MARKDOWN */}
-          <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+          <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 dark:bg-slate-600">
             <div className="flex items-center justify-between mb-4">
-              <label className="text-sm font-semibold text-gray-700">Descrizione dell'avvistamento</label>
+              <label className="text-sm font-semibold text-gray-700 dark:text-white">Describe your encounter</label>
               <div className="flex bg-gray-100 p-1 rounded-lg">
-                <button type="button" onClick={() => setPreviewMode('edit')} className={`px-3 py-1 rounded-md text-xs font-medium flex items-center gap-1 ${previewMode === 'edit' ? 'bg-white shadow-sm text-orange-600' : 'text-gray-500'}`}><PenLine size={14} /> Scrivi</button>
-                <button type="button" onClick={() => setPreviewMode('preview')} className={`px-3 py-1 rounded-md text-xs font-medium flex items-center gap-1 ${previewMode === 'preview' ? 'bg-white shadow-sm text-orange-600' : 'text-gray-500'}`}><Eye size={14} /> Anteprima</button>
+                <button type="button" onClick={() => setPreviewMode('edit')} className={`px-3 py-1 rounded-md text-xs font-medium flex items-center gap-1 ${previewMode === 'edit' ? 'bg-white shadow-sm text-orange-600' : 'text-gray-500'}`}>
+                  <PenLine size={14} /> Write
+                </button>
+                <button type="button" onClick={() => setPreviewMode('preview')} className={`px-3 py-1 rounded-md text-xs font-medium flex items-center gap-1 ${previewMode === 'preview' ? 'bg-white shadow-sm text-orange-600' : 'text-gray-500'}`}>
+                  <Eye size={14} /> Preview
+                </button>
               </div>
             </div>
 
             {previewMode === 'edit' ? (
               <div className="space-y-2">
                 <div className="flex gap-2 border-b border-gray-100 pb-2">
-                  <button type="button" onClick={() => insertMarkdown('bold')} className="p-2 hover:bg-gray-100 rounded text-gray-600"><Bold size={18} /></button>
-                  <button type="button" onClick={() => insertMarkdown('italic')} className="p-2 hover:bg-gray-100 rounded text-gray-600"><Italic size={18} /></button>
-                  <button type="button" onClick={() => insertMarkdown('link')} className="p-2 hover:bg-gray-100 rounded text-gray-600"><LinkIcon size={18} /></button>
+                  <button type="button" onClick={() => insertMarkdown('bold')} className="p-2 hover:bg-gray-100 rounded text-gray-600 dark:text-white"><Bold size={18} /></button>
+                  <button type="button" onClick={() => insertMarkdown('italic')} className="p-2 hover:bg-gray-100 rounded text-gray-600 dark:text-white"><Italic size={18} /></button>
+                  <button type="button" onClick={() => insertMarkdown('link')} className="p-2 hover:bg-gray-100 rounded text-gray-600 dark:text-white"><LinkIcon size={18} /></button>
                 </div>
                 <textarea
                   id="description"
@@ -189,13 +188,13 @@ const AddCat = () => {
                   rows={6}
                   value={formik.values.description}
                   onChange={formik.handleChange}
-                  className="w-full py-2 outline-none resize-none text-gray-700"
-                  placeholder="Descrivi il gatto..."
+                  className="w-full py-2 outline-none resize-none text-gray-700 dark:text-white bg-transparent"
+                  placeholder="Describe how the cat was..."
                 />
               </div>
             ) : (
-              <div className="prose prose-orange min-h-[160px] text-gray-700 text-left">
-                {formik.values.description ? <ReactMarkdown>{formik.values.description}</ReactMarkdown> : <span className="text-gray-400 italic text-sm">Nessuna descrizione.</span>}
+              <div className="prose prose-orange min-h-[160px] text-gray-700 text-left dark:text-white">
+                {formik.values.description ? <ReactMarkdown>{formik.values.description}</ReactMarkdown> : <span className="text-gray-400 italic text-sm">No description provided.</span>}
               </div>
             )}
             {formik.touched.description && formik.errors.description && <p className="text-red-500 text-xs mt-1 text-left">{formik.errors.description}</p>}
@@ -203,9 +202,10 @@ const AddCat = () => {
 
           <button
             type="submit"
-            className="w-full bg-amber-500 hover:bg-orange-600 text-white font-bold py-4 rounded-2xl shadow-lg transition-all transform hover:-translate-y-1"
+            disabled={formik.isSubmitting}
+            className="w-full bg-amber-500 hover:bg-orange-600 disabled:bg-gray-400 text-white font-bold py-4 rounded-2xl shadow-lg transition-all transform hover:-translate-y-1"
           >
-            Pubblica Avvistamento
+            {formik.isSubmitting ? 'Publishing...' : 'Publish Sighting'}
           </button>
         </form>
       </div>
