@@ -132,6 +132,9 @@ yarn run dev
 # Using pnpm
 pnpm run dev
 ```
+# Testing 
+To ensure the reliability and stability of the application, end-to-end tests were implemented using Cypress. This tool allows simulating real user behavior directly in the browser, validating core user flows, UI interactions, and backend integrations. By using Cypress, potential regressions and bugs can be detected early, improving the overall quality of the project throughout the development process.
+
 # Tested on
 <p>
   <a href="https://zen-browser.app/" title="Zen Browser">
