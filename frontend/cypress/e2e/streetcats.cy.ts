@@ -45,8 +45,64 @@ describe("Testing", () => {
   });
 
 
+  it('5. SpotCat: should display correctly every form completed', () => {
+    // This is a function defined in support/commands.ts, helpfull in order to achive DRY.
+    cy.loginFunct('testingUser@email.it', '12345');
+    cy.visit('/spot');
+    cy.intercept('POST', '**/cats', {
+      statusCode: 201,
+      body: { id: '999' }
+    }).as('postCat');
 
-  it('6. Map: should load markers for all cats', () => {
+    cy.get('input[type="file"]').selectFile({
+      contents: Cypress.Buffer.from('file-content'),
+      fileName: 'gatto_test.jpg',
+      lastModified: Date.now(),
+    }, { force: true });
+
+    cy.get('img[alt="Preview"]').should('be.visible');
+
+    cy.get('input[name="title"]').type('Gatto Rosso Imperiale');
+
+    cy.get('.leaflet-container').click();
+    cy.get('.leaflet-marker-icon').should('be.visible');
+
+    cy.get('textarea[name="description"]').type('Un gatto molto **coraggioso** trovato vicino al Colosseo.');
+
+    cy.contains('button', 'Anteprima').click();
+    cy.get('.prose strong').should('have.text', 'coraggioso');
+    cy.contains('button', 'Scrivi').click();
+
+    cy.contains('button', 'Pubblica Avvistamento').click();
+
+
+    cy.url().should('include', '/catdetails/999');
+
+  })
+
+  it('6. SpotCat: should show the error if you try to spot a cat without uploading a photo', () => {
+
+    cy.loginFunct('testingUser@email.it', '12345');
+    cy.visit('/spot');
+    cy.intercept('POST', '**/cats').as('postCat');
+
+    cy.get('input[name="title"]').type('Invisible cat');
+
+    cy.get('.leaflet-container').click(100, 100);
+
+    cy.get('textarea[name="description"]').type('Thi cat is just a test');
+
+    cy.contains('button', 'Pubblica Avvistamento').click();
+
+    cy.contains("There must be a photo!")
+      .should('be.visible');
+
+    cy.url().should('include', '/spot');
+
+    cy.get('@postCat.all').should('have.length', 0);
+  });
+
+  it('7. Map: should load markers for all cats', () => {
     cy.intercept('GET', '**/cats/**', { fixture: 'cat.json' }).as('getCats');
     cy.visit('/map');
     cy.wait('@getCats');
@@ -108,6 +164,49 @@ describe("Testing", () => {
     cy.url().should('include', 'home');
 
     cy.get(`.rounded-full > .w-full`).should('be.visible')
+  });
+
+
+  it('11. Comment: should not submit a comment if the text area is empty', () => {
+    const catId = 1;
+    cy.loginFunct('testingUser@email.it', '12345');
+
+    cy.intercept('GET', `**/cats/${catId}`, {
+      fixture: 'cat.json'
+    }).as('getCat');
+
+    cy.intercept('GET', `**/cats/${catId}/comments`, {
+      body: []
+    }).as('getComments');
+
+    cy.visit(`/catdetails/${catId}`);
+    cy.wait(['@getCat', '@getComments']);
+
+    cy.get('textarea[placeholder="Leave a comment..."]')
+      .should('have.value', '');
+
+    cy.contains('button', 'Submit')
+      .should('be.disabled');
+
+    // Proviamo a scrivere solo spazi
+    cy.get('textarea[placeholder="Leave a comment..."]')
+      .type('     ');
+
+    cy.contains('button', 'Submit')
+      .should('be.disabled');
+
+    cy.get('textarea[placeholder="Leave a comment..."]')
+      .clear()
+      .type('Che bel gattone!');
+
+    cy.contains('button', 'Submit')
+      .should('not.be.disabled');
+
+    cy.get('textarea[placeholder="Leave a comment..."]')
+      .clear();
+
+    cy.contains('button', 'Submit')
+      .should('be.disabled');
   });
 
 });

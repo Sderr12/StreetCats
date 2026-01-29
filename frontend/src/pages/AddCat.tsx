@@ -26,7 +26,7 @@ const CatSchema = Yup.object().shape({
   description: Yup.string().min(10, 'Sii più descrittivo!').required('La descrizione è obbligatoria'),
   latitude: Yup.number().required('Seleziona un punto sulla mappa'),
   longitude: Yup.number().required(),
-  image: Yup.mixed().required('Una foto è necessaria per confermare l\'avvistamento')
+  image: Yup.mixed().required('There must be a photo!')
 });
 
 const AddCat = () => {

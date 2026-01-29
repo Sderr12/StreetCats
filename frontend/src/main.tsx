@@ -51,10 +51,6 @@ const router = createBrowserRouter([
             )
           },
           {
-            path: "/spottest",
-            element: <AddCat />
-          },
-          {
             path: "/catdetails/:id",
             element: <CatDetails />
           }
