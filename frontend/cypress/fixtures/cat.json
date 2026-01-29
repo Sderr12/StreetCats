@@ -1,0 +1,9 @@
+{
+  "id": 1,
+  "title": "Another Cat",
+  "description": "Just like a famous photo...",
+  "latitude": 41.8902,
+  "longitude": 12.4922,
+  "photo": "https://placekitten.com/800/500",
+  "createdAt": "2026-01-28"
+}

@@ -1,0 +1,11 @@
+[
+  {
+    "id": 101,
+    "content": "Majestic cat!",
+    "user": {
+      "username": "Catlover",
+      "avatarUrl": "https://placekitten.com/800/500"
+    },
+    "createdAt": "2025-01-01"
+  }
+]

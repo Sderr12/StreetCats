@@ -36,7 +36,7 @@ const Register = () => {
       .required("Username required"),
     email: Yup.string().email("Invalid email").required("Email required"),
     password: Yup.string()
-      .min(5, "Password must be at least 5 characters")
+      .min(5, "Password must be at least 5 characters long")
       .required("Password required"),
     avatar: Yup.mixed<File>()
       .nullable()

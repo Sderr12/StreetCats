@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "lib": [
+      "es5",
+      "dom"
+    ],
+    "types": [
+      "cypress",
+      "node"
+    ],
+    "isolatedModules": false,
+    "esModuleInterop": true,
+    "module": "commonjs",
+    "strict": true
+  },
+  "include": [
+    "**/*.ts",
+    "**/*.js"
+  ]
+}

@@ -70,6 +70,7 @@ const Avatar = ({ avatarUrl, username, size = 'md', className = '' }: AvatarProp
       >
         {avatarUrl && !imageError ? (
           <img
+            data-testid="user-avatar"
             src={avatarUrl}
             alt={username}
             className="w-full h-full object-cover bg-gray-200"
