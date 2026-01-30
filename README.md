@@ -32,6 +32,7 @@
   <a href="#project-description">Project Description</a> • 
   <a href="#key-features">Key Features</a> •
   <a href="#how-to-execute">How to execute</a> •
+    <a href="#testing">Testing</a> •
   <a href="#tested-on">Tested on </a> 
 </p>
 
