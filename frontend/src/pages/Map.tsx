@@ -81,7 +81,7 @@ const Map = () => {
             onClick={() => navigate(`/catdetails/${cat.id}`)}
             className="bg-orange-500 text-white px-3 py-1 rounded-full text-xs font-bold hover:bg-orange-600 transition-all"
           >
-            DETTAGLI
+            Details
           </button>
         </div>
       </Popup>
@@ -89,10 +89,10 @@ const Map = () => {
   )), [cats, navigate]);
 
   return (
-    <div className="mt-20 flex flex-col lg:flex-row w-full h-[calc(100vh-5rem)] pb-16 lg:pb-0 overflow-hidden">
+    <div className="dark:bg-slate-700 mt-16 flex flex-col lg:flex-row w-full h-[calc(100vh-5rem)] pb-16 lg:pb-0 overflow-hidden">
 
       {/* Sidebar Desktop */}
-      <div className="hidden lg:flex flex-col w-1/3 bg-white dark:bg-slate-900 p-4 border-r border-amber-200 dark:border-slate-800 overflow-y-auto z-10">
+      <div className="hidden lg:flex flex-col w-1/3 bg-white dark:bg-slate-700 p-4 border-r border-amber-200 dark:border-slate-800 overflow-y-auto z-10">
         <Searchbar onSearch={(q) => console.log(q)} />
         <h2 className="my-6 text-amber-600 font-bold text-center border-b border-amber-100 pb-2 italic">Cats around</h2>
         <div className="flex flex-col gap-4">
