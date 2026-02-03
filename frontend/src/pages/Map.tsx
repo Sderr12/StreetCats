@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback, useMemo, useRef } from "react";
 import { useMap, useMapEvents, MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import L from "leaflet";
 import axios from "../api/axios";
+import api from "../api/axios";
 import { useNavigate } from "react-router-dom";
 import Catcard from "../components/Catcard";
 import Searchbar from "../components/Searchbar";
@@ -49,10 +50,10 @@ const Map = () => {
 
   const fetchNearbyCats = useCallback(async (lat: number, lon: number) => {
     try {
-      const response = await axios.get(`/cats/nearby`, { params: { lat, lon, radius: 10 } });
+      const response = await api.get(`/cats/nearby`, { params: { lat, lon, radius: 10 } });
       setCats(response.data);
     } catch (error) {
-      console.error("Errore radar:", error);
+      console.error("Error:", error);
     }
   }, []);
 
@@ -89,10 +90,9 @@ const Map = () => {
   )), [cats, navigate]);
 
   return (
-    <div className="dark:bg-slate-700 mt-16 flex flex-col lg:flex-row w-full h-[calc(100vh-5rem)] pb-16 lg:pb-0 overflow-hidden">
+    <div className="dark:bg-slate-800 mt-16 flex flex-col lg:flex-row w-full h-[calc(100vh-5rem)] pb-16 lg:pb-0 overflow-hidden">
 
-      {/* Sidebar Desktop */}
-      <div className="hidden lg:flex flex-col w-1/3 bg-white dark:bg-slate-700 p-4 border-r border-amber-200 dark:border-slate-800 overflow-y-auto z-10">
+      <div className="hidden lg:flex flex-col w-1/3 bg-white dark:bg-slate-800 p-4 border-r border-amber-200 dark:border-slate-800 overflow-y-auto z-10">
         <Searchbar onSearch={(q) => console.log(q)} />
         <h2 className="my-6 text-amber-600 font-bold text-center border-b border-amber-100 pb-2 italic">Cats around</h2>
         <div className="flex flex-col gap-4">
@@ -112,7 +112,6 @@ const Map = () => {
           {catMarkers}
         </MapContainer>
 
-        {/* Pulsante Mobile - z-index alto per stare sopra la mappa */}
         <button
           onClick={() => setIsSliderOpen(true)}
           className="fixed bottom-24 right-6 bg-amber-500 p-4 rounded-full lg:hidden z-[999] shadow-2xl border-2 border-white transform active:scale-90 transition-transform h-15 w-15"
@@ -120,7 +119,6 @@ const Map = () => {
           <img src={cat_white} className="w-7 h-7" alt="cats" />
         </button>
 
-        {/* Slider Mobile */}
         {isSliderOpen && (
           <>
             <div className="fixed inset-0 bg-black/50 z-[1001] lg:hidden animate-fade-in" onClick={() => setIsSliderOpen(false)} />
@@ -130,7 +128,7 @@ const Map = () => {
             >
               <div className="w-12 h-1.5 bg-gray-300 rounded-full mx-auto mb-4" />
               <div className="flex justify-between items-center mb-6">
-                <h3 className="font-bold text-xl text-amber-800 dark:text-amber-500">Gatti vicini</h3>
+                <h3 className="font-bold text-xl text-amber-800 dark:text-amber-500">Cats around</h3>
                 <button onClick={() => setIsSliderOpen(false)} className="text-3xl text-gray-400 font-light">&times;</button>
               </div>
               <div className="flex flex-col gap-4 pb-20">

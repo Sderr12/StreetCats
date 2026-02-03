@@ -8,7 +8,7 @@ import ThemeToggle from "../components/DarkModeToggle.tsx"
 const Topbar = () => {
   const navigate = useNavigate();
   const useAuth = useContext(AuthContext);
-  if (!useAuth) { throw new Error("Must be inside authprovider") }
+  if (!useAuth) { throw new Error("Must be inside authprovider"); }
   const { user } = useAuth;
 
   const handleClick = () => {
@@ -24,7 +24,6 @@ const Topbar = () => {
         <span className="hidden md:inline text-2xl text-amber-300 text-opacity-80 font-semibold">StreetCats</span>
       </div>
 
-      {/* Menu centrale - solo desktop */}
       <div className="hidden lg:flex items-center gap-8 text-lg text-black dark:text-white font-medium justify-center">
         <button
           className="hover:text-amber-400 transition-colors"
@@ -48,7 +47,6 @@ const Topbar = () => {
 
       <div className="lg:hidden"></div>
 
-      {/* Profilo a destra */}
       <div className="flex items-center justify-end">
         {user ? (
           <Avatar

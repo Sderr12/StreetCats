@@ -1,14 +1,13 @@
 
 const Footer = () => {
   return (
-    <footer className="bg-gray-200 py-12 px-6 pb-24 lg:pb-12 text-gray-500">
+    <footer className="bg-gray-50 dark:bg-slate-700 py-12 px-6 pb-24 lg:pb-12 text-gray-500 dark:text-white">
       <div className="max-w-7xl mx-auto">
 
-        {/* Colonne */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12 place-items-center text-center">
 
           <div className="flex flex-col items-center max-w-xs">
-            <h4 className="text-lg font-semibold mb-4 text-gray-700">Explore</h4>
+            <h4 className="text-lg font-semibold mb-4 text-gray-700 dark:text-white">Explore</h4>
             <ul className="space-y-2">
               <li>
                 <a href="/home" className="hover:text-amber-400 transition-colors">
@@ -29,7 +28,7 @@ const Footer = () => {
           </div>
 
           <div className="flex flex-col items-center max-w-xs">
-            <h4 className="text-lg font-semibold mb-4 text-gray-700">Support</h4>
+            <h4 className="text-lg font-semibold mb-4 text-gray-700 dark:text-white">Support</h4>
             <ul className="space-y-2">
               <li>
                 <a href="/contact" className="hover:text-amber-400 transition-colors">
@@ -50,7 +49,7 @@ const Footer = () => {
           </div>
 
           <div className="flex flex-col items-center max-w-xs">
-            <h4 className="text-lg font-semibold mb-4 text-gray-700">Community</h4>
+            <h4 className="text-lg font-semibold mb-4 text-gray-700 dark:text-white">Community</h4>
             <ul className="space-y-2">
               <li>
                 <a href="#" className="hover:text-amber-400 transition-colors">
@@ -71,7 +70,7 @@ const Footer = () => {
           </div>
 
           <div className="flex flex-col items-center max-w-xs">
-            <h4 className="text-lg font-semibold mb-4 text-gray-700">Follow Us</h4>
+            <h4 className="text-lg font-semibold mb-4 text-gray-700 dark:text-white">Follow Us</h4>
             <ul className="space-y-2">
               <li>
                 <a href="#" className="hover:text-amber-400 transition-colors">
@@ -93,9 +92,8 @@ const Footer = () => {
 
         </div>
 
-        {/* Bottom bar */}
         <div className="border-t border-gray-200 pt-8 flex flex-col md:flex-row justify-between items-center justify-center gap-4 text-center md:text-left">
-          <p className="text-sm text-gray-500">
+          <p className="text-sm text-gray-500 dark:text-white">
             © {new Date().getFullYear()} StreetCats — All rights reserved.
           </p>
 

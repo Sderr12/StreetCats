@@ -70,40 +70,40 @@ const Home = () => {
       {/* Hero Section */}
       <section className="relative h-screen w-full overflow-hidden">
         {/* Background Image */}
-        <div 
+        <div
           className="absolute inset-0 bg-cover bg-center lg:bg-[center_30%] transition-transform duration-700 hover:scale-105"
           style={{ backgroundImage: `url(${streetimage})` }}
         />
-        
+
         {/* Gradient Overlay */}
         <div className="absolute inset-0 bg-gradient-to-br from-black/70 via-black/50 to-transparent" />
-        
+
         {/* Animated Elements */}
 
         {/* Hero Content */}
         <div className="relative z-10 flex flex-col items-start justify-center h-full px-6 md:px-12 lg:px-40 max-w-7xl mx-auto">
-          
+
           <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold text-white drop-shadow-2xl mb-6 leading-tight">
             Welcome to
             <span className="block text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-orange-400 to-amber-500 mt-2">
               StreetCats
             </span>
           </h1>
-          
+
           <p className="text-xl md:text-2xl lg:text-3xl text-gray-200 font-light mb-8 max-w-2xl leading-relaxed">
             Help the cat distribution system find its way through our global community
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4">
-            <button 
+            <button
               onClick={handleClick}
               className="group px-8 py-4 bg-gradient-to-r from-amber-400 to-orange-500 hover:from-amber-500 hover:to-orange-600 text-white font-bold rounded-full transition-all duration-300 shadow-xl hover:shadow-2xl hover:scale-105 flex items-center gap-2 justify-center"
             >
               Spot a Street Cat
               <span className="group-hover:translate-x-1 transition-transform">→</span>
             </button>
-            
-            <button 
+
+            <button
               onClick={() => navigate("/map")}
               className="px-8 py-4 bg-white/10 backdrop-blur-md border-2 border-white/30 hover:bg-white/20 text-white font-semibold rounded-full transition-all duration-300 hover:scale-105"
             >
@@ -116,9 +116,9 @@ const Home = () => {
       </section>
 
       {/* Features Section */}
-      <section 
+      <section
         id="features"
-        className="w-full py-20 lg:py-32 bg-gradient-to-br from-gray-50 via-orange-50 to-amber-50"
+        className="w-full py-20 lg:py-32 bg-gradient-to-br from-gray-50 via-orange-50 to-amber-50 dark:from-gray-50 dark:via-slate-400"
       >
         <div className="max-w-7xl mx-auto px-6 md:px-12">
           <div className="text-center mb-16">
@@ -138,9 +138,9 @@ const Home = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {features.map((feature, index) => (
-              <div 
+              <div
                 key={index}
-                className="group bg-white rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border border-gray-100"
+                className="group bg-white dark:bg-slate-400 rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border border-gray-100"
               >
                 <h3 className="text-xl font-bold text-gray-800 mb-3">
                   {feature.title}
@@ -160,7 +160,7 @@ const Home = () => {
           <div className="absolute top-0 left-0 w-96 h-96 bg-white rounded-full blur-3xl" />
           <div className="absolute bottom-0 right-0 w-96 h-96 bg-white rounded-full blur-3xl" />
         </div>
-        
+
         <div className="max-w-4xl mx-auto px-6 md:px-12 text-center relative z-10">
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
             Ready to Make a Difference?
@@ -168,7 +168,7 @@ const Home = () => {
           <p className="text-xl md:text-2xl text-white/90 mb-10 leading-relaxed">
             Every spotted cat counts. Join our community today and help us build a comprehensive database of street cats worldwide.
           </p>
-          <button 
+          <button
             onClick={handleClick}
             className="group px-10 py-5 bg-white hover:bg-gray-50 text-orange-600 font-bold rounded-full transition-all duration-300 shadow-2xl hover:scale-105 text-lg inline-flex items-center gap-3"
           >

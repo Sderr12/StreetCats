@@ -1,10 +1,11 @@
 import { useState, useEffect, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { MapPin, Calendar, ArrowLeft, Loader2, Send } from 'lucide-react';
-import axios from 'axios';
+import api from "../api/axios.ts"
 import { AuthContext } from "../context/AuthProvider";
 import CommentItem from "../components/CommentItem.tsx";
 import ReactMarkdown from 'react-markdown';
+import axios from "axios";
 
 const CatDetailPage = () => {
   const { id } = useParams();
@@ -22,8 +23,8 @@ const CatDetailPage = () => {
     const fetchCatData = async () => {
       try {
         const [catRes, commentsRes] = await Promise.all([
-          axios.get(`http://localhost:3000/cats/${id}`),
-          axios.get(`http://localhost:3000/cats/${id}/comments`)
+          api.get(`/cats/${id}`),
+          api.get(`/cats/${id}/comments`)
         ]);
 
         if (catRes.data) {
@@ -109,7 +110,7 @@ const CatDetailPage = () => {
   );
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-slate-950 pb-20 transition-colors duration-300">
+    <div className="min-h-screen bg-gray-50 dark:bg-slate-800 pb-20 transition-colors duration-300">
       <div className="max-w-4xl mx-auto px-4 py-10 md:py-20">
 
         <button onClick={() => navigate(-1)} className="flex items-center gap-2 text-gray-600 dark:text-slate-400 hover:text-orange-500 mb-6 transition-colors group">
@@ -152,7 +153,7 @@ const CatDetailPage = () => {
 
             <section className="mt-16 pt-10 border-t-2 border-dashed border-gray-100 dark:border-slate-800">
               <div className="flex items-center justify-between mb-8">
-                <h2 className="text-3xl font-bold text-gray-900 dark:text-white">Commenti</h2>
+                <h2 className="text-3xl font-bold text-gray-900 dark:text-white">Comments</h2>
                 <div className="bg-orange-500 text-white px-3 py-1 rounded-full text-sm font-bold">
                   {comments.length}
                 </div>

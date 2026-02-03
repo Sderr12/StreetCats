@@ -1,9 +1,7 @@
-import axios from "../api/axios";
 import { useNavigate } from "react-router-dom";
 
 const Catcard = ({ cat }: { cat: any }) => {
   const navigate = useNavigate();
-
 
   return (
     <div
@@ -18,10 +16,10 @@ const Catcard = ({ cat }: { cat: any }) => {
       <div className="flex flex-col">
         <h3 className="font-bold text-amber-900 dark:text-amber-500">{cat.title}</h3>
         <p className="text-sm text-gray-500 dark:text-gray-400 line-clamp-1">
-          {cat.description || "Nessuna descrizione"}
+          {cat.description || "No description"}
         </p>
         <span className="text-xs mt-1 text-amber-600 font-semibold italic">
-          Clicca per dettagli
+          Click for further details
         </span>
       </div>
     </div>

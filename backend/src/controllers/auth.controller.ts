@@ -15,8 +15,8 @@ export class AuthController {
     try {
       const { username, email, password } = req.body;
 
-      const protocol = req.protocol; // http o https
-      const host = req.get('host'); // localhost:3000
+      const protocol = req.protocol;
+      const host = req.get('host');
 
       const avatarUrl = req.file
         ? `${protocol}://${host}/uploads/${req.file.filename}`
@@ -29,7 +29,7 @@ export class AuthController {
 
       const user = await this.authService.register(
         { username, email, password },
-        avatarUrl // Ora salviamo http://localhost:3000/uploads/123.jpg
+        avatarUrl
       );
 
       const token = this.tokenService.generateToken({ userId: user.id });
@@ -49,10 +49,6 @@ export class AuthController {
 
       const user = await this.authService.login(email, password);
 
-      // NOTA PER IL SUPREMO LEADER: 
-      // Se nel DB avete già dei vecchi utenti salvati solo con "/uploads/...", 
-      // il login continuerà a mandarli così. Dovreste aggiornare il DB 
-      // o fare la stessa logica di concatenazione anche qui se user.avatarUrl non inizia con "http".
 
       const token = this.tokenService.generateToken({ userId: user.id });
       res.json({ token, user });

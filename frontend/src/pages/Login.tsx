@@ -52,7 +52,7 @@ const Login = () => {
 
             navigate(from, { replace: true });
           } catch (err: any) {
-            setServerError(err.response?.data?.message || "Errore durante il login");
+            setServerError(err.response?.data?.message || "Error during login");
           } finally {
             setSubmitting(false);
           }

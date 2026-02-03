@@ -46,14 +46,14 @@ export class CatController {
         return;
       }
 
-      const catWithPhoto = {
+      const catWithFullUrl = {
         ...cat,
         photo: cat.photo
-          ? `${req.protocol}://${req.get('host')}/${cat.photo}` // Senza /uploads/
+          ? `${req.protocol}://${req.get('host')}/uploads/${cat.photo}`
           : null
       };
 
-      res.status(200).json(catWithPhoto);
+      res.status(200).json(catWithFullUrl);
     } catch (error: any) {
       res.status(500).json({ message: error.message });
     }
@@ -66,14 +66,15 @@ export class CatController {
       const radius = Number(req.query.radius || 10);
       const cats = await this.catService.getNearbyCats(lat, lon, radius);
 
-      const catsWithPhotos = cats.map(cat => ({
+      // Costruisci l'URL completo per ogni gatto
+      const catsWithFullUrls = cats.map(cat => ({
         ...cat,
         photo: cat.photo
-          ? `${req.protocol}://${req.get('host')}/${cat.photo}`
+          ? `${req.protocol}://${req.get('host')}/uploads/${cat.photo}`
           : null
       }));
 
-      res.status(200).json(catsWithPhotos);
+      res.status(200).json(catsWithFullUrls);
     } catch (error: any) {
       res.status(500).json({
         message: error.message
