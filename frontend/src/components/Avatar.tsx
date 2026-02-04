@@ -15,7 +15,6 @@ const Avatar = ({ avatarUrl, username, size = 'md', className = '' }: AvatarProp
   const menuRef = useRef<HTMLDivElement>(null);
   const auth = useContext(AuthContext);
 
-  // Automatic close when there's outside click
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
@@ -66,7 +65,7 @@ const Avatar = ({ avatarUrl, username, size = 'md', className = '' }: AvatarProp
       {/* Avatar Trigger */}
       <div
         onClick={() => setIsOpen(!isOpen)}
-        className={`rounded-full cursor-pointer border-2 border-white dark:border-slate-800 shadow-md transition-all hover:scale-105 active:scale-95 overflow-hidden ${sizeClasses[size]} ${className}`}
+        className={`rounded-full cursor-pointer border-2 border-white dark:border-gray-400 shadow-md transition-all hover:scale-105 active:scale-95 overflow-hidden ${sizeClasses[size]} ${className}`}
       >
         {avatarUrl && !imageError ? (
           <img

@@ -1,0 +1,93 @@
+.map-root {
+  height: calc(100vh - 4rem - 72px);
+}
+@media (min-width: 1024px) {
+  .map-root {
+    height: calc(100vh - 4rem);
+  }
+}
+.cat-div-icon {
+  background: transparent !important;
+  border: none !important;
+}
+.leaflet-container {
+  border-radius: 1rem !important;
+}
+
+.leaflet-control-zoom {
+  border-radius: 0.875rem !important;
+  border: none !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12) !important;
+  overflow: hidden;
+}
+.leaflet-control-zoom a {
+  background: rgba(255, 255, 255, 0.75) !important;
+  backdrop-filter: blur(8px);
+  color: #44403c !important;
+}
+.leaflet-control-zoom a:hover {
+  background: rgba(245, 243, 240, 1) !important;
+}
+
+.leaflet-popup-content-wrapper {
+  border-radius: 1rem !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.13) !important;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.78) !important;
+  backdrop-filter: blur(12px);
+}
+.leaflet-popup-tip {
+  background: rgba(255, 255, 255, 0.78) !important;
+}
+
+@keyframes cardSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-card-up {
+  animation: cardSlideUp 0.38s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes drawerUp {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+.animate-drawer-up {
+  animation: drawerUp 0.38s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.animate-fade-in {
+  animation: fadeIn 0.25s ease both;
+}
+
+.scrollbar-amber::-webkit-scrollbar {
+  width: 6px;
+}
+.scrollbar-amber::-webkit-scrollbar-track {
+  background: transparent;
+}
+.scrollbar-amber::-webkit-scrollbar-thumb {
+  background: #f59e0b;
+  border-radius: 3px;
+}
+.scrollbar-amber::-webkit-scrollbar-thumb:hover {
+  background: #d97706;
+}

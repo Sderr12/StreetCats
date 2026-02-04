@@ -26,7 +26,7 @@ axiosPrivate.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      console.error("Sessione scaduta o non autorizzata.");
+      console.error("Timed out session.");
 
       localStorage.removeItem("streetcats_user");
       localStorage.removeItem("streetcats_token");

@@ -100,7 +100,6 @@ const Home = () => {
               className="group px-8 py-4 bg-gradient-to-r from-amber-400 to-orange-500 hover:from-amber-500 hover:to-orange-600 text-white font-bold rounded-full transition-all duration-300 shadow-xl hover:shadow-2xl hover:scale-105 flex items-center gap-2 justify-center"
             >
               Spot a Street Cat
-              <span className="group-hover:translate-x-1 transition-transform">→</span>
             </button>
 
             <button
@@ -140,14 +139,11 @@ const Home = () => {
             {features.map((feature, index) => (
               <div
                 key={index}
-                className="group bg-white dark:bg-slate-400 rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border border-gray-100"
+                className="reveal group bg-white dark:bg-slate-400 rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border border-gray-100"
+                style={{ transitionDelay: `${index * 150}ms` }}
               >
-                <h3 className="text-xl font-bold text-gray-800 mb-3">
-                  {feature.title}
-                </h3>
-                <p className="text-gray-600 leading-relaxed">
-                  {feature.description}
-                </p>
+                <h3 className="text-xl font-bold text-gray-800 mb-3">{feature.title}</h3>
+                <p className="text-gray-600 leading-relaxed">{feature.description}</p>
               </div>
             ))}
           </div>
@@ -155,25 +151,26 @@ const Home = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="w-full py-20 lg:py-32 bg-gradient-to-r from-amber-300 via-orange-500 to-amber-600 relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-0 left-0 w-96 h-96 bg-white rounded-full blur-3xl" />
-          <div className="absolute bottom-0 right-0 w-96 h-96 bg-white rounded-full blur-3xl" />
+      <section className="w-full py-20 lg:py-32 bg-gradient-to-r from-amber-400 via-orange-500 to-amber-600 dark:from-slate-900 dark:via-orange-900/40 dark:to-slate-900 relative overflow-hidden transition-colors duration-500">
+        <div className="absolute inset-0 bg-black/0 dark:bg-black/20" />
+
+        <div className="absolute inset-0 opacity-10 dark:opacity-20">
+          <div className="absolute top-0 left-0 w-96 h-96 bg-white dark:bg-orange-500 rounded-full blur-3xl" />
+          <div className="absolute bottom-0 right-0 w-96 h-96 bg-white dark:bg-amber-500 rounded-full blur-3xl" />
         </div>
 
         <div className="max-w-4xl mx-auto px-6 md:px-12 text-center relative z-10">
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
             Ready to Make a Difference?
           </h2>
-          <p className="text-xl md:text-2xl text-white/90 mb-10 leading-relaxed">
+          <p className="text-xl md:text-2xl text-white/90 dark:text-gray-300 mb-10 leading-relaxed">
             Every spotted cat counts. Join our community today and help us build a comprehensive database of street cats worldwide.
           </p>
           <button
             onClick={handleClick}
-            className="group px-10 py-5 bg-white hover:bg-gray-50 text-orange-600 font-bold rounded-full transition-all duration-300 shadow-2xl hover:scale-105 text-lg inline-flex items-center gap-3"
+            className="group px-10 py-5 bg-white dark:bg-orange-600 dark:text-white dark:hover:bg-orange-500 text-orange-600 font-bold rounded-full transition-all duration-300 shadow-2xl hover:scale-105 text-lg inline-flex items-center gap-3"
           >
             Get Started Now
-            <span className="group-hover:translate-x-1 transition-transform">→</span>
           </button>
         </div>
       </section>
