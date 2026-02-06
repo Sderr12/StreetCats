@@ -10,4 +10,6 @@ export const allowedOrigins = [
   'https://localhost:3000',
   'https://localhost:5173',
   'http://192.168.188.144:80',
+  'http://192.168.188.144:5173',  // AGGIUNGI QUESTO
+  'http://192.168.188.144:3000',  // E ANCHE QUESTO
 ];

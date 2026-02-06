@@ -117,10 +117,10 @@ const MapPage = () => {
 
           <button
             onClick={() => setIsDrawerOpen(true)}
-            className="lg:hidden absolute bottom-20 left-1/2 -translate-x-1/2 z-[40] px-8 py-4 rounded-full bg-orange-600 text-white shadow-[0_10px_30px_rgba(234,88,12,0.4)] flex items-center gap-3 border-2 border-white/20 active:scale-90 transition-all font-bold"
+            className="lg:hidden absolute bottom-2 left-1/2 -translate-x-1/2 z-[40] px-2 py-3 rounded-full bg-orange-400 text-white shadow-[0_10px_30px_rgba(234,88,12,0.4)] flex items-center gap-3 border-2 border-white/20 active:scale-90 transition-all font-bold"
           >
             {isFetching ? <Loader2 className="animate-spin" size={24} /> : <img src={cat_white} className="w-6 h-6" alt="cats" />}
-            <span className="uppercase text-sm tracking-widest">See {cats.length} cats</span>
+            <span className="uppercase text-sm tracking-widest">{cats.length} cats</span>
           </button>
         </div>
       </main>

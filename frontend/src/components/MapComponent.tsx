@@ -45,15 +45,23 @@ const createUserIcon = (name: string, avatarUrl?: string) => L.divIcon({
 });
 
 // --- MAP EVENTS LOGIC ---
-const MapEvents = ({ onCenterChange }: { onCenterChange?: (lat: number, lng: number) => void }) => {
+const MapEvents = ({
+  onCenterChange,
+  onMapClick
+}: {
+  onCenterChange?: (lat: number, lng: number) => void;
+  onMapClick?: (lat: number, lng: number) => void;
+}) => {
   const map = useMapEvents({
-    // moveend cattura sia la fine del trascinamento che la fine dello zoom
+    // moveend per la MapPage (ordinamento lista)
     moveend: () => {
       const center = map.getCenter();
-      if (onCenterChange) {
-        onCenterChange(center.lat, center.lng);
-      }
+      if (onCenterChange) onCenterChange(center.lat, center.lng);
     },
+    // click per AddCat (posizionamento marker)
+    click: (e) => {
+      if (onMapClick) onMapClick(e.latlng.lat, e.latlng.lng);
+    }
   });
 
   useEffect(() => {
@@ -67,7 +75,7 @@ const MapEvents = ({ onCenterChange }: { onCenterChange?: (lat: number, lng: num
 const RecenterMap = ({ center, shouldRecenter }: { center: [number, number]; shouldRecenter: boolean }) => {
   const map = useMap();
   useEffect(() => {
-    if (shouldRecenter && center) {
+    if (shouldRecenter && center && center[0] !== 0) {
       map.flyTo(center, map.getZoom(), { duration: 1.5 });
     }
   }, [center, shouldRecenter, map]);
@@ -82,23 +90,26 @@ interface MapComponentProps {
   shouldRecenter?: boolean;
   user: any;
   onCenterChange?: (lat: number, lng: number) => void;
+  onMapClick?: (lat: number, lng: number) => void; // Aggiunta prop
   onSeeProfile?: (id: string) => void;
 }
 
 const MapComponent: React.FC<MapComponentProps> = ({
-  cats, userPosition, selectedCatPos, programmaticCenter, shouldRecenter, user, onCenterChange, onSeeProfile
+  cats, userPosition, selectedCatPos, programmaticCenter, shouldRecenter, user, onCenterChange, onMapClick, onSeeProfile
 }) => {
   return (
     <MapContainer center={userPosition} zoom={15} className="w-full h-full z-0" attributionControl={false}>
       <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
 
-      <MapEvents onCenterChange={onCenterChange} />
+      <MapEvents onCenterChange={onCenterChange} onMapClick={onMapClick} />
 
       {programmaticCenter && <RecenterMap center={programmaticCenter} shouldRecenter={shouldRecenter || false} />}
 
       <Marker position={userPosition} icon={createUserIcon(user?.username || "Me", user?.avatarUrl)} />
 
-      {selectedCatPos && <Marker position={selectedCatPos} icon={createSelectionIcon()} />}
+      {selectedCatPos && selectedCatPos[0] !== 0 && (
+        <Marker position={selectedCatPos} icon={createSelectionIcon()} />
+      )}
 
       {cats.map((cat) => (
         <Marker
