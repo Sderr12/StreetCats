@@ -30,7 +30,6 @@ const CatDetailPage = () => {
         if (catRes.data) {
           const catData = catRes.data;
 
-          // Reverse geocoding
           try {
             const geoRes = await axios.get('https://nominatim.openstreetmap.org/reverse', {
               params: {
@@ -44,7 +43,6 @@ const CatDetailPage = () => {
             const city = address.city || address.town || address.village || address.suburb || "Località ignota";
             setCityName(city);
           } catch (geoErr) {
-            console.error("Error Geocoding:", geoErr);
             setCityName("Position not found");
           }
 
@@ -62,10 +60,9 @@ const CatDetailPage = () => {
             date: formattedCatDate
           });
         }
-
         setComments(commentsRes.data);
       } catch (err) {
-        console.error("Error during data recovering:", err);
+        console.error("Error:", err);
       } finally {
         setLoading(false);
       }
@@ -76,7 +73,6 @@ const CatDetailPage = () => {
   const handlePostComment = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newComment.trim() || isSubmitting) return;
-
     setIsSubmitting(true);
     try {
       const res = await api.post(
@@ -84,12 +80,10 @@ const CatDetailPage = () => {
         { content: newComment },
         { headers: { Authorization: `Bearer ${auth.token}` } }
       );
-
       setComments([res.data, ...comments]);
       setNewComment("");
     } catch (err) {
-      console.error("Error during submit:", err);
-      alert("Impossible to sumbit comment.");
+      alert("Impossible to submit comment.");
     } finally {
       setIsSubmitting(false);
     }
@@ -104,13 +98,13 @@ const CatDetailPage = () => {
   if (!cat) return (
     <div className="h-screen flex flex-col items-center justify-center">
       <h2 className="text-xl font-bold mb-4">Cat not found.</h2>
-      <button onClick={() => navigate('/home')} className="bg-orange-500 text-white px-6 py-2 rounded-xl">Torna alla Home</button>
+      <button onClick={() => navigate('/home')} className="bg-orange-500 text-white px-6 py-2 rounded-xl">Back Home</button>
     </div>
   );
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-slate-800 pb-20 transition-colors duration-300">
-      <div className="max-w-4xl mx-auto px-4 py-10 md:py-20">
+      <div className="max-w-4xl mx-auto px-4 py-10 md:py-20 text-left">
 
         <button onClick={() => navigate(-1)} className="flex items-center gap-2 text-gray-600 dark:text-slate-400 hover:text-orange-500 mb-6 transition-colors group pt-10 md:pt-4">
           <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
@@ -118,7 +112,6 @@ const CatDetailPage = () => {
         </button>
 
         <article className="bg-white dark:bg-slate-900 rounded-[1.5rem] shadow-2xl overflow-hidden border border-gray-100 dark:border-slate-800">
-
           <div className="relative h-[400px] md:h-[500px] w-full">
             <img src={cat.photo} alt={cat.title} className="w-full h-full object-cover" />
           </div>
@@ -131,31 +124,48 @@ const CatDetailPage = () => {
             <div className="flex flex-wrap gap-6 mb-10 pb-10 border-b border-gray-100 dark:border-slate-800">
               <div className="flex items-center gap-3 bg-orange-50 dark:bg-orange-900/20 px-4 py-2 rounded-full">
                 <MapPin size={20} className="text-orange-500" />
-                <span className="text-orange-700 dark:text-orange-300 font-semibold text-sm">
-                  {cityName}
-                </span>
+                <span className="text-orange-700 dark:text-orange-300 font-semibold text-sm">{cityName}</span>
               </div>
               <div className="flex items-center gap-3 bg-blue-50 dark:bg-blue-900/20 px-4 py-2 rounded-full">
                 <Calendar size={20} className="text-blue-500" />
-                <span className="text-blue-700 dark:text-blue-300 font-semibold text-sm">
-                  {cat.date}
-                </span>
+                <span className="text-blue-700 dark:text-blue-300 font-semibold text-sm">{cat.date}</span>
               </div>
             </div>
 
             <section className="mb-12">
-              <span className='text-white bg-orange-400 rounded-2xl text-2xl font-extrabold p-2'> Description </span>
-              <div className="prose dark:prose-invert max-w-none text-gray-700 dark:text-slate-300 leading-relaxed text-lg p-2 mt-3">
-                <ReactMarkdown>{cat.description}</ReactMarkdown>
+              <span className='text-white bg-orange-400 rounded-2xl text-2xl font-extrabold px-4 py-1'> Description </span>
+              <div className="prose dark:prose-invert max-w-none text-gray-700 dark:text-slate-300 leading-relaxed text-lg mt-6">
+                {/* FIX: Configurazione ReactMarkdown per Link e Stili */}
+                <ReactMarkdown
+                  components={{
+                    em: ({ ...props }) => <i className="italic font-serif text-gray-800 dark:text-slate-100" {...props} />,
+                    strong: ({ ...props }) => <b className="font-black text-black dark:text-white" {...props} />,
+                    a: ({ href, ...props }) => {
+                      const safeHref = (href?.startsWith('http://') || href?.startsWith('https://'))
+                        ? href
+                        : `https://${href}`;
+                      return (
+                        <a
+                          {...props}
+                          href={safeHref}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-orange-500 underline decoration-2 font-bold hover:text-orange-600 transition-colors"
+                        />
+                      );
+                    }
+                  }}
+                >
+                  {cat.description}
+                </ReactMarkdown>
               </div>
             </section>
 
+            {/* COMMENTS SECTION */}
             <section className="mt-16 pt-10 border-t-2 border-dashed border-gray-100 dark:border-slate-800">
               <div className="flex items-center justify-between mb-8">
                 <h2 className="text-3xl font-bold text-gray-900 dark:text-white">Comments</h2>
-                <div className="bg-orange-500 text-white px-3 py-1 rounded-full text-sm font-bold">
-                  {comments.length}
-                </div>
+                <div className="bg-orange-500 text-white px-3 py-1 rounded-full text-sm font-bold">{comments.length}</div>
               </div>
 
               {auth.token ? (
@@ -178,16 +188,13 @@ const CatDetailPage = () => {
                   </div>
                 </form>
               ) : (
-                <div className="mb-10 p-4 bg-gray-100 dark:bg-slate-800 rounded-2xl text-center text-gray-500">
-                  Login to comment!
-                </div>
+                <div className="mb-10 p-4 bg-gray-100 dark:bg-slate-800 rounded-2xl text-center text-gray-500">Login to comment!</div>
               )}
 
               <div className="space-y-6">
                 {comments.map((c) => {
                   const dateToParse = c.createdAt || new Date().toISOString();
                   const dateObj = new Date(dateToParse);
-
                   const displayDate = isNaN(dateObj.getTime())
                     ? "Date non valid"
                     : dateObj.toLocaleDateString('it-IT', { day: 'numeric', month: 'short', year: 'numeric' });
@@ -198,7 +205,7 @@ const CatDetailPage = () => {
                       id={c.id}
                       text={c.content}
                       createdAt={displayDate}
-                      author={c.user || { username: "Utente" }}
+                      author={c.user || { username: "User" }}
                     />
                   );
                 })}

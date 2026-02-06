@@ -15,9 +15,6 @@ const Catcard = ({ cat }: { cat: any }) => {
       />
       <div className="flex flex-col">
         <h3 className="font-bold text-amber-900 dark:text-amber-500">{cat.title}</h3>
-        <p className="text-sm text-gray-500 dark:text-gray-400 line-clamp-1">
-          {cat.description || "No description"}
-        </p>
         <span className="text-xs mt-1 text-amber-600 font-semibold italic">
           Click for further details
         </span>
