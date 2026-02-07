@@ -41,4 +41,4 @@ docs/*.synctex.gz
 docs/*.tex
 
 backend/uploads/*
-
+frontend/cypress/screenshots/*
