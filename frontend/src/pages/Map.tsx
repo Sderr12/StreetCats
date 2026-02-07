@@ -6,7 +6,7 @@ import MapComponent from "../components/MapComponent";
 import Catcard from "../components/Catcard";
 import { Navigation, X, Loader2 } from "lucide-react";
 import cat_white from "../assets/cat-white.png";
-
+import "./map.css";
 const DEFAULT_POSITION: [number, number] = [41.212, 13.576];
 
 const getDistance = (lat1: number, lon1: number, lat2: number, lon2: number) => {

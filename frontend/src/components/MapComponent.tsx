@@ -1,10 +1,8 @@
 import React, { useEffect } from "react";
-import { MapContainer, TileLayer, Marker, useMap, useMapEvents } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, useMap, useMapEvents, Popup } from "react-leaflet";
 import L from "leaflet";
 import { renderToStaticMarkup } from "react-dom/server";
 import Avatar from "./Avatar.tsx";
-import "../pages/map.css";
-
 // --- CUSTOM ICONS ---
 const createSelectionIcon = () => L.divIcon({
   html: renderToStaticMarkup(
@@ -31,7 +29,7 @@ const createCatMarkerIcon = (imageUrl: string, title: string) => L.divIcon({
       <div className="w-0 h-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-t-[10px] border-t-orange-500 -mt-[2px]"></div>
     </div>
   ),
-  className: "cat-marker-container", iconSize: [48, 56], iconAnchor: [24, 52], popupAnchor: [0, -50],
+  className: "cat-marker-container", iconSize: [48, 56], iconAnchor: [24, 52], popupAnchor: [0, -45],
 });
 
 const createUserIcon = (name: string, avatarUrl?: string) => L.divIcon({
@@ -53,12 +51,10 @@ const MapEvents = ({
   onMapClick?: (lat: number, lng: number) => void;
 }) => {
   const map = useMapEvents({
-    // moveend per la MapPage (ordinamento lista)
     moveend: () => {
       const center = map.getCenter();
       if (onCenterChange) onCenterChange(center.lat, center.lng);
     },
-    // click per AddCat (posizionamento marker)
     click: (e) => {
       if (onMapClick) onMapClick(e.latlng.lat, e.latlng.lng);
     }
@@ -90,7 +86,7 @@ interface MapComponentProps {
   shouldRecenter?: boolean;
   user: any;
   onCenterChange?: (lat: number, lng: number) => void;
-  onMapClick?: (lat: number, lng: number) => void; // Aggiunta prop
+  onMapClick?: (lat: number, lng: number) => void;
   onSeeProfile?: (id: string) => void;
 }
 
@@ -116,8 +112,40 @@ const MapComponent: React.FC<MapComponentProps> = ({
           key={cat.id}
           position={[cat.latitude, cat.longitude]}
           icon={createCatMarkerIcon(cat.photo, cat.title)}
-          eventHandlers={{ click: () => onSeeProfile?.(cat.id) }}
-        />
+        >
+          <Popup closeButton={false} minWidth={180} className="custom-popup">
+            <div className="flex flex-col p-0 bg-white dark:bg-slate-900 rounded-2xl overflow-hidden border-none">
+              {/* Foto Miniatura */}
+              <div className="w-full h-24 overflow-hidden">
+                <img
+                  src={cat.photo || 'https://via.placeholder.com/150'}
+                  alt={cat.title}
+                  className="w-full h-full object-cover transition-transform hover:scale-110 duration-500"
+                />
+              </div>
+
+              {/* Dettagli Gatto */}
+              <div className="p-3 flex flex-col gap-2">
+                <div>
+                  <h4 className="text-sm font-black text-stone-800 dark:text-white uppercase tracking-tight truncate">
+                    {cat.title}
+                  </h4>
+                  <p className="text-[10px] text-stone-500 font-medium leading-tight">
+                    Spotted nearby
+                  </p>
+                </div>
+
+                {/* Bottone Profilo */}
+                <button
+                  onClick={() => onSeeProfile?.(cat.id)}
+                  className="w-full py-2 bg-orange-500 hover:bg-orange-600 text-white text-[10px] font-black uppercase tracking-widest rounded-lg transition-all active:scale-95 shadow-md shadow-orange-200 dark:shadow-none"
+                >
+                  Profilo
+                </button>
+              </div>
+            </div>
+          </Popup>
+        </Marker>
       ))}
     </MapContainer>
   );

@@ -1,0 +1,30 @@
+/* Cambia il background dell'area di testo dell'editor */
+.CodeMirror {
+  background-color: #f9fafb !important; /* stone-50 (come i tuoi input) */
+  border-radius: 0.5rem; /* Per matchare il tuo stile meno tondo */
+}
+
+/* Cambia il background specifico quando il placeholder è attivo */
+/* Nota: CodeMirror non ha un selettore "div:has(.placeholder)", 
+   quindi coloriamo l'intera area o la prima riga */
+.CodeMirror-lines {
+  background-color: transparent !important;
+}
+
+/* Se vuoi che la riga del placeholder abbia un colore diverso finché non scrivi */
+.CodeMirror-placeholder {
+  background-color: #fef3c7 !important; /* Un ambra leggerissimo o quello che preferisci */
+  display: inline-block;
+  width: 100%;
+}
+
+/* --- MODALITÀ SCURA --- */
+.dark .CodeMirror {
+  background-color: #0f172a !important; /* slate-900 */
+  border-color: #334155 !important; /* slate-700 */
+}
+
+.dark .CodeMirror-placeholder {
+  background-color: transparent !important; /* Di solito in dark si preferisce solo il testo colorato */
+  color: #475569 !important; /* slate-600 */
+}

@@ -103,42 +103,61 @@ const CatDetailPage = () => {
   );
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-slate-800 pb-20 transition-colors duration-300">
+    <div className="min-h-screen bg-gray-50 dark:bg-slate-950 pb-20 transition-colors duration-300">
+
+      <style>{`
+        .markdown-content h1 { font-size: 2.25rem; font-weight: 800; margin-top: 2rem; margin-bottom: 1rem; color: inherit; border-bottom: 3px solid #f59e0b; padding-bottom: 0.5rem; }
+        .markdown-content h2 { font-size: 1.85rem; font-weight: 700; margin-top: 1.8rem; margin-bottom: 0.8rem; color: inherit; }
+        .markdown-content h3 { font-size: 1.5rem; font-weight: 700; margin-top: 1.5rem; margin-bottom: 0.6rem; color: inherit; }
+        .markdown-content p { margin-bottom: 1.25rem; line-height: 1.8; color: inherit; }
+        .markdown-content ul { list-style-type: disc; padding-left: 1.5rem; margin-bottom: 1.25rem; }
+        .markdown-content ol { list-style-type: decimal; padding-left: 1.5rem; margin-bottom: 1.25rem; }
+        .markdown-content li { margin-bottom: 0.5rem; }
+        .markdown-content blockquote { border-left: 5px solid #f59e0b; padding: 0.75rem 1.25rem; background: rgba(245, 158, 11, 0.05); font-style: italic; margin: 1.5rem 0; border-radius: 0 12px 12px 0; }
+        .markdown-content code { background: rgba(0,0,0,0.08); padding: 0.2rem 0.4rem; border-radius: 6px; font-family: monospace; font-size: 0.85em; }
+        .dark .markdown-content code { background: rgba(255,255,255,0.15); color: #fbbf24; }
+        .markdown-content hr { border: 0; border-top: 2px solid #e5e7eb; margin: 2.5rem 0; opacity: 0.3; }
+        .markdown-content a { color: #f59e0b; text-decoration: underline; font-weight: 700; }
+      `}</style>
+
       <div className="max-w-4xl mx-auto px-4 py-10 md:py-20 text-left">
 
         <button onClick={() => navigate(-1)} className="flex items-center gap-2 text-gray-600 dark:text-slate-400 hover:text-orange-500 mb-6 transition-colors group pt-10 md:pt-4">
           <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
-          <span className="font-medium">Go back</span>
+          <span className="font-black uppercase text-xs tracking-widest">Go back</span>
         </button>
 
-        <article className="bg-white dark:bg-slate-900 rounded-[1.5rem] shadow-2xl overflow-hidden border border-gray-100 dark:border-slate-800">
-          <div className="relative h-[400px] md:h-[500px] w-full">
+        <article className="bg-white dark:bg-slate-900 rounded-md shadow-2xl overflow-hidden border border-gray-100 dark:border-slate-800">
+          <div className="relative h-[400px] md:h-[550px] w-full">
             <img src={cat.photo} alt={cat.title} className="w-full h-full object-cover" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent md:hidden" />
           </div>
 
-          <div className="p-8 md:p-12">
-            <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 dark:text-white mb-6 tracking-tight">
+          <div className="p-8 md:p-14">
+            <h1 className="text-4xl md:text-6xl font-black text-gray-900 dark:text-white mb-8 tracking-tight">
               {cat.title}
             </h1>
 
-            <div className="flex flex-wrap gap-6 mb-10 pb-10 border-b border-gray-100 dark:border-slate-800">
-              <div className="flex items-center gap-3 bg-orange-50 dark:bg-orange-900/20 px-4 py-2 rounded-full">
-                <MapPin size={20} className="text-orange-500" />
-                <span className="text-orange-700 dark:text-orange-300 font-semibold text-sm">{cityName}</span>
+            <div className="flex flex-wrap gap-4 mb-12 pb-10 border-b border-gray-100 dark:border-slate-800">
+              <div className="flex items-center gap-3 bg-stone-100 dark:bg-slate-800 px-5 py-2.5 rounded-2xl">
+                <MapPin size={18} className="text-orange-500" />
+                <span className="text-stone-700 dark:text-slate-300 font-bold text-xs uppercase tracking-wider">{cityName}</span>
               </div>
-              <div className="flex items-center gap-3 bg-blue-50 dark:bg-blue-900/20 px-4 py-2 rounded-full">
-                <Calendar size={20} className="text-blue-500" />
-                <span className="text-blue-700 dark:text-blue-300 font-semibold text-sm">{cat.date}</span>
+              <div className="flex items-center gap-3 bg-stone-100 dark:bg-slate-800 px-5 py-2.5 rounded-2xl">
+                <Calendar size={18} className="text-amber-500" />
+                <span className="text-stone-700 dark:text-slate-300 font-bold text-xs uppercase tracking-wider">{cat.date}</span>
               </div>
             </div>
 
-            <section className="mb-12">
-              <span className='text-white bg-orange-400 rounded-2xl text-2xl font-extrabold px-4 py-1'> Description </span>
-              <div className="prose dark:prose-invert max-w-none text-gray-700 dark:text-slate-300 leading-relaxed text-lg mt-6">
-                {/* FIX: Configurazione ReactMarkdown per Link e Stili */}
+            <section className="mb-16">
+              <span className='text-white bg-orange-500 rounded-full text-xs font-black px-5 py-2 uppercase tracking-[0.2em] shadow-lg shadow-orange-500/20'>
+                Description
+              </span>
+
+              <div className="markdown-content max-w-none text-gray-700 dark:text-slate-300 text-lg mt-10">
                 <ReactMarkdown
                   components={{
-                    em: ({ ...props }) => <i className="italic font-serif text-gray-800 dark:text-slate-100" {...props} />,
+                    em: ({ ...props }) => <i className="italic text-gray-800 dark:text-slate-100" {...props} />,
                     strong: ({ ...props }) => <b className="font-black text-black dark:text-white" {...props} />,
                     a: ({ href, ...props }) => {
                       const safeHref = (href?.startsWith('http://') || href?.startsWith('https://'))
@@ -150,7 +169,6 @@ const CatDetailPage = () => {
                           href={safeHref}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-orange-500 underline decoration-2 font-bold hover:text-orange-600 transition-colors"
                         />
                       );
                     }
@@ -162,53 +180,59 @@ const CatDetailPage = () => {
             </section>
 
             {/* COMMENTS SECTION */}
-            <section className="mt-16 pt-10 border-t-2 border-dashed border-gray-100 dark:border-slate-800">
-              <div className="flex items-center justify-between mb-8">
-                <h2 className="text-3xl font-bold text-gray-900 dark:text-white">Comments</h2>
-                <div className="bg-orange-500 text-white px-3 py-1 rounded-full text-sm font-bold">{comments.length}</div>
+            <section className="mt-20 pt-12 border-t border-stone-100 dark:border-slate-800">
+              <div className="flex items-center justify-between mb-10">
+                <h2 className="text-3xl font-black text-gray-900 dark:text-white uppercase tracking-tighter">Comments</h2>
+                <div className="bg-orange-500 text-white px-4 py-1 rounded-full text-sm font-black">{comments.length}</div>
               </div>
 
               {auth.token ? (
-                <form onSubmit={handlePostComment} className="mb-10 space-y-4">
+                <form onSubmit={handlePostComment} className="mb-12 space-y-4">
                   <textarea
                     value={newComment}
                     onChange={(e) => setNewComment(e.target.value)}
                     placeholder="Leave a comment..."
-                    className="w-full bg-gray-50 dark:bg-slate-800 rounded-2xl p-4 border-none focus:ring-2 focus:ring-orange-500 dark:text-white outline-none transition-all resize-none"
+                    className="w-full bg-stone-50 dark:bg-slate-800/50 rounded-3xl p-6 border-2 border-transparent focus:border-orange-500 dark:text-white outline-none transition-all resize-none font-medium"
                     rows={3}
                   />
                   <div className="flex justify-end">
                     <button
                       disabled={isSubmitting || !newComment.trim()}
-                      className="bg-orange-500 text-white px-6 py-2 rounded-xl flex items-center gap-2 hover:bg-orange-600 transition-colors disabled:opacity-50"
+                      className="bg-stone-900 dark:bg-amber-500 text-white dark:text-stone-900 px-8 py-3 rounded-2xl font-black uppercase text-xs tracking-widest flex items-center gap-3 hover:scale-105 transition-transform disabled:opacity-50"
                     >
                       {isSubmitting ? <Loader2 className="animate-spin" size={18} /> : <Send size={18} />}
-                      Submit
+                      Post Comment
                     </button>
                   </div>
                 </form>
               ) : (
-                <div className="mb-10 p-4 bg-gray-100 dark:bg-slate-800 rounded-2xl text-center text-gray-500">Login to comment!</div>
+                <div className="mb-12 p-8 bg-stone-50 dark:bg-slate-800/30 rounded-3xl text-center border-2 border-dashed border-stone-200 dark:border-slate-700">
+                  <p className="text-stone-400 dark:text-slate-500 font-bold uppercase text-xs tracking-widest">Login to join the conversation!</p>
+                </div>
               )}
 
-              <div className="space-y-6">
-                {comments.map((c) => {
-                  const dateToParse = c.createdAt || new Date().toISOString();
-                  const dateObj = new Date(dateToParse);
-                  const displayDate = isNaN(dateObj.getTime())
-                    ? "Date non valid"
-                    : dateObj.toLocaleDateString('it-IT', { day: 'numeric', month: 'short', year: 'numeric' });
+              <div className="space-y-8">
+                {comments.length > 0 ? (
+                  comments.map((c) => {
+                    const dateToParse = c.createdAt || new Date().toISOString();
+                    const dateObj = new Date(dateToParse);
+                    const displayDate = isNaN(dateObj.getTime())
+                      ? "Date invalid"
+                      : dateObj.toLocaleDateString('it-IT', { day: 'numeric', month: 'short', year: 'numeric' });
 
-                  return (
-                    <CommentItem
-                      key={c.id}
-                      id={c.id}
-                      text={c.content}
-                      createdAt={displayDate}
-                      author={c.user || { username: "User" }}
-                    />
-                  );
-                })}
+                    return (
+                      <CommentItem
+                        key={c.id}
+                        id={c.id}
+                        text={c.content}
+                        createdAt={displayDate}
+                        author={c.user || { username: "User" }}
+                      />
+                    );
+                  })
+                ) : (
+                  <p className="text-center py-10 text-stone-300 dark:text-slate-600 italic font-medium">No comments yet. Be the first to say hi!</p>
+                )}
               </div>
             </section>
           </div>
