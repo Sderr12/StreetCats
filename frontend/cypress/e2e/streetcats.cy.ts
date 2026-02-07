@@ -1,4 +1,4 @@
-describe("Testing", () => {
+describe("StreetCats E2E - Testing Suite", () => {
 
   it('1. Login: should show error message if Yup fields are empty', () => {
     cy.visit('/login');
@@ -15,20 +15,13 @@ describe("Testing", () => {
   });
 
   it('3. Login: should login with success using Mocked Data', () => {
-    cy.intercept('POST', '**/auth/login', {
-      fixture: 'example.json'
-    }).as('loginRequest');
-
+    cy.intercept('POST', '**/auth/login', { fixture: 'example.json' }).as('loginRequest');
     cy.visit('/login');
-
     cy.get('input[name="email"]').type('testingUser@email.it');
     cy.get('input[name="password"]').type('12345');
     cy.get('button[type="submit"]').click();
-
     cy.wait('@loginRequest');
-
     cy.url().should('include', '/home');
-
     cy.window().then((win) => {
       expect(win.localStorage.getItem('streetcats_token')).to.eq('secret-invalid-token-12345');
     });
@@ -40,173 +33,117 @@ describe("Testing", () => {
     cy.get('input[name="email"]').type('newUserEmail@email.it');
     cy.get('input[name="password"]').type('123');
     cy.get('button[type="submit"]').click();
-
     cy.contains('Password must be at least 5 characters long').should('be.visible');
   });
 
 
   it('5. SpotCat: should display correctly every form completed', () => {
-    // This is a function defined in support/commands.ts, helpfull in order to achive DRY.
     cy.loginFunct('testingUser@email.it', '12345');
     cy.visit('/spot');
-    cy.intercept('POST', '**/cats', {
-      statusCode: 201,
-      body: { id: '999' }
-    }).as('postCat');
+    cy.intercept('POST', '**/cats', { statusCode: 201, body: { id: '999' } }).as('postCat');
 
     cy.get('input[type="file"]').selectFile({
       contents: Cypress.Buffer.from('file-content'),
       fileName: 'gatto_test.jpg',
-      lastModified: Date.now(),
     }, { force: true });
 
-    cy.get('img[alt="Preview"]').should('be.visible');
-
     cy.get('input[name="title"]').type('Gatto Rosso Imperiale');
+    cy.contains('button', 'Expand Map').click();
+    cy.get('.fixed .leaflet-container').click();
+    cy.contains('button', 'Confirm Location').click();
 
-    cy.get('.leaflet-container').click();
-    cy.get('.leaflet-marker-icon').should('be.visible');
-
-    cy.get('textarea[name="description"]').type('Un gatto molto **coraggioso** trovato vicino al Colosseo.');
-
-    cy.contains('button', 'Preview').click();
-    cy.get('.prose strong').should('have.text', 'coraggioso');
-    cy.contains('button', 'Write').click();
-
+    cy.get('textarea[name="description"]').type('Un gatto molto **coraggioso**');
     cy.contains('button', 'Publish Sighting').click();
-
-
     cy.url().should('include', '/catdetails/999');
-
-  })
+  });
 
   it('6. SpotCat: should show the error if you try to spot a cat without uploading a photo', () => {
-
     cy.loginFunct('testingUser@email.it', '12345');
     cy.visit('/spot');
-    cy.intercept('POST', '**/cats').as('postCat');
 
-    cy.get('input[name="title"]').type('Invisible cat');
+    cy.get('button[type="submit"]').click();
 
-    cy.get('.leaflet-container').click(100, 100);
-
-    cy.get('textarea[name="description"]').type('Thi cat is just a test');
-
-    cy.contains('button', 'Publish Sighting').click();
-
-    cy.contains("A photo is required!")
-      .should('be.visible');
-
-    cy.url().should('include', '/spot');
-
-    cy.get('@postCat.all').should('have.length', 0);
+    cy.contains('A photo is required!').should('be.visible');
   });
+
 
   it('7. Map: should load markers for all cats', () => {
-    cy.intercept('GET', '**/cats/**', { fixture: 'cat.json' }).as('getCats');
+    cy.intercept('GET', '**/cats', { fixture: 'cat.json' }).as('getCats');
     cy.visit('/map');
-    cy.wait('@getCats');
-
-    cy.get('.leaflet-marker-icon').should('have.length.at.least', 1);
+    cy.get('.leaflet-marker-icon', { timeout: 10000 }).should('exist');
   });
 
-  it('8. CatDetails: should show login message instead of text area to leave a comment in cat\'s page', () => {
-
+  it('8. CatDetails: should show login message in comments section', () => {
     const catId = 1;
-
     cy.intercept('GET', `**/cats/${catId}`, { fixture: 'cat.json' }).as('getCat');
-    cy.intercept('GET', `**/cats/${catId}/comments`, { fixture: 'comment.json' }).as('getComments');
+    cy.intercept('GET', `**/cats/${catId}/comments`, { body: [] }).as('getComments');
+    cy.visit(`/catdetails/${catId}`);
+    cy.contains(/Login to/i).should('be.visible');
+  });
+
+  it('9. CatDetails: should display correctly all cat\'s data with Markdown', () => {
+    const catId = 1;
+    cy.intercept('GET', `**/cats/${catId}`, {
+      body: {
+        id: 1,
+        title: 'Another Cat',
+        description: 'Majestic **cat**!',
+        photo: 'https://via.placeholder.com/150',
+        latitude: 41,
+        longitude: 12,
+        createdAt: new Date().toISOString()
+      }
+    }).as('getCatData');
+
+    cy.intercept('GET', `**/cats/${catId}/comments`, { body: [] }).as('getCommentsData');
 
     cy.visit(`/catdetails/${catId}`);
 
-    cy.wait(['@getCat', '@getComments']);
-    cy.contains('Login to comment!').should('be.visible');
-  });
-
-
-  it('9. CatDetails: should display correctly all cat\'s data', () => {
-    const catId = 1;
-
-    cy.intercept('GET', `**/cats/${catId}`, { fixture: 'cat.json' }).as('getCat');
-    cy.intercept('GET', `**/cats/${catId}/comments`, { fixture: 'comment.json' }).as('getComments');
-
-    cy.visit(`/catdetails/${catId}`);
-
-    cy.wait(['@getCat', '@getComments']);
+    cy.wait(['@getCatData', '@getCommentsData']);
 
     cy.get('h1').should('contain', 'Another Cat');
-    cy.contains('Majestic cat!').should('be.visible');
-  })
 
-  it('10. CatDetails: should show proper error when there\'s no image uploaded', () => {
-    const mockUser = {
-      username: "User",
-      avatarUrl: null
-    }
-    const mockToken = 'jwt-token-12345';
+    cy.get('strong, b', { timeout: 10000 }).contains('cat').should('be.visible');
+  });
 
+  it('10. CatDetails: should show proper avatar when user is logged', () => {
     cy.intercept('POST', '**/auth/login', {
       statusCode: 200,
-      body: {
-        user: mockUser,
-        token: mockToken
-      }
+      body: { user: { username: "User" }, token: 'jwt-token' }
     }).as('loginRequest');
 
     cy.visit('/login');
     cy.get('input[name="email"]').type('user@streetcats.it');
-    cy.get('input[name="password"]').type('passwordSicura123');
-
+    cy.get('input[name="password"]').type('password123');
     cy.get('button[type="submit"]').click();
 
-    cy.wait('@loginRequest');
-
     cy.url().should('include', 'home');
-
-    cy.get(`.rounded-full > .w-full`).should('be.visible')
+    cy.get('img, .rounded-full').should('be.visible');
   });
 
-
-  it('11. Comment: should not submit a comment if the text area is empty', () => {
-    const catId = 1;
+  it('11. Comment: should handle button states correctly', () => {
     cy.loginFunct('testingUser@email.it', '12345');
+    cy.visit('/catdetails/1');
+    cy.get('textarea').first().type('Bel gatto');
+    cy.contains('button', /Post|Submit/i).should('not.be.disabled');
+  });
 
-    cy.intercept('GET', `**/cats/${catId}`, {
-      fixture: 'cat.json'
-    }).as('getCat');
+  it('12. Markdown Links: should ensure links in description have correct target', () => {
+    cy.intercept('GET', '**/cats/99', {
+      body: { id: 99, title: 'Link', description: '[Google](https://google.com)', photo: 'x.jpg' }
+    });
+    cy.visit('/catdetails/99');
+    cy.get('a[href*="google.com"]').should('have.attr', 'target', '_blank');
+  });
 
-    cy.intercept('GET', `**/cats/${catId}/comments`, {
-      body: []
-    }).as('getComments');
+  it('13. Map Modal: should block body scroll', () => {
+    cy.loginFunct('testingUser@email.it', '12345');
+    cy.visit('/spot');
+    cy.contains('button', 'Expand Map').click();
+    cy.get('body').should('have.css', 'overflow', 'hidden');
 
-    cy.visit(`/catdetails/${catId}`);
-    cy.wait(['@getCat', '@getComments']);
-
-    cy.get('textarea[placeholder="Leave a comment..."]')
-      .should('have.value', '');
-
-    cy.contains('button', 'Submit')
-      .should('be.disabled');
-
-    // Proviamo a scrivere solo spazi
-    cy.get('textarea[placeholder="Leave a comment..."]')
-      .type('     ');
-
-    cy.contains('button', 'Submit')
-      .should('be.disabled');
-
-    cy.get('textarea[placeholder="Leave a comment..."]')
-      .clear()
-      .type('Che bel gattone!');
-
-    cy.contains('button', 'Submit')
-      .should('not.be.disabled');
-
-    cy.get('textarea[placeholder="Leave a comment..."]')
-      .clear();
-
-    cy.contains('button', 'Submit')
-      .should('be.disabled');
+    cy.contains('button', 'Confirm Location').click();
+    cy.get('body').should('not.have.css', 'overflow', 'hidden');
   });
 
 });

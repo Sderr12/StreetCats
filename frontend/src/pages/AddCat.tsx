@@ -130,12 +130,16 @@ const AddCat = () => {
         .markdown-preview hr { border: 0; border-top: 1px solid #e5e7eb; margin: 1.5rem 0; }
       `}</style>
 
-      <div className="max-w-3xl mx-auto px-4 pt-8">
+      <div className="max-w-3xl mx-auto px-4 md:pt-20">
 
-        <header className="lg:mb-5 mb-1 flex items-center gap-4">
-          <button onClick={() => navigate(-1)} className="flex items-center gap-2 text-gray-600 dark:text-slate-400 hover:text-orange-500 mb-6 transition-colors group pt-10 md:pt-4">
+        <header className="mb-6 pt-16 md:pt-0">
+          <button
+            type="button"
+            onClick={() => navigate(-1)}
+            className="inline-flex items-center gap-2 text-gray-600 dark:text-slate-400 hover:text-orange-500 transition-colors group py-2"
+          >
             <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
-            <span className="font-black uppercase text-xs tracking-widest">Go back</span>
+            <span className="font-black uppercase text-[11px] tracking-widest">Go back</span>
           </button>
         </header>
 
@@ -164,6 +168,11 @@ const AddCat = () => {
                 }
               }} />
             </div>
+            {formik.touched.image && formik.errors.image && (
+              <p className="mt-2 text-red-500 text-[10px] font-bold uppercase tracking-widest flex items-center gap-1">
+                <AlertCircle size={12} /> {formik.errors.image as string}
+              </p>
+            )}
           </section>
 
           {/* LOCATION SECTION */}
@@ -175,9 +184,13 @@ const AddCat = () => {
                 type="text"
                 className="w-full px-6 py-4 rounded-2xl bg-stone-50 dark:bg-slate-900 border-none outline-none text-stone-800 dark:text-white font-bold focus:ring-2 focus:ring-amber-500 transition-all placeholder:text-stone-400 dark:placeholder:text-slate-600"
                 onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
                 value={formik.values.title}
                 placeholder="Ex: The harbor ginger cat"
               />
+              {formik.touched.title && formik.errors.title && (
+                <p className="mt-1 text-red-500 text-[10px] font-bold uppercase">{formik.errors.title}</p>
+              )}
             </div>
 
             <div>
@@ -250,6 +263,9 @@ const AddCat = () => {
                   </div>
                 </div>
               )}
+              {formik.errors.latitude && (
+                <p className="mt-2 text-red-500 text-[10px] font-bold uppercase tracking-widest">{formik.errors.latitude}</p>
+              )}
             </div>
           </section>
 
@@ -300,11 +316,15 @@ const AddCat = () => {
                     placeholder="Tell us about the cat... Use markdown for formatting!"
                     value={formik.values.description}
                     onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
                     onKeyDown={(e) => e.stopPropagation()}
                   />
                 )}
               </div>
             </div>
+            {formik.touched.description && formik.errors.description && (
+              <p className="mt-2 text-red-500 text-[10px] font-bold uppercase tracking-widest">{formik.errors.description}</p>
+            )}
           </section>
 
           <button
