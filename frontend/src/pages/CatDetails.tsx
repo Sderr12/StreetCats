@@ -206,7 +206,7 @@ const CatDetailPage = () => {
                   </div>
                 </form>
               ) : (
-                <div className="mb-12 p-8 bg-stone-50 dark:bg-slate-800/30 rounded-3xl text-center border-2 border-dashed border-stone-200 dark:border-slate-700">
+                <div className="mb-12 p-8 bg-stone-50 dark:bg-slate-800/30 rounded-sm text-center border-2 border-dashed border-stone-200 dark:border-slate-700">
                   <p className="text-stone-400 dark:text-slate-500 font-bold uppercase text-xs tracking-widest">Login to join the conversation!</p>
                 </div>
               )}

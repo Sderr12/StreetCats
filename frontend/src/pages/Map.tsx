@@ -53,13 +53,23 @@ const MapPage = () => {
   }, []);
 
   useEffect(() => {
-    navigator.geolocation.getCurrentPosition((pos) => {
-      const p: [number, number] = [pos.coords.latitude, pos.coords.longitude];
-      setUserPosition(p);
-      setMapCenter(p);
-      setProgrammaticCenter(p);
-      setShouldRecenter(true);
-    });
+    const options = {
+      enableHighAccuracy: true,
+      timeout: 5000,
+      maximumAge: 0
+    };
+
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        const p: [number, number] = [pos.coords.latitude, pos.coords.longitude];
+        setUserPosition(p);
+        setMapCenter(p);
+        setProgrammaticCenter(p);
+        setShouldRecenter(true);
+      },
+      (err) => console.error("Errore localizzazione:", err),
+      options
+    );
   }, []);
 
   useEffect(() => {
