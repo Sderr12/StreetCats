@@ -9,6 +9,7 @@ interface RegisterFormValues {
   username: string;
   email: string;
   password: string;
+  confirmPassword: string;
   avatar?: File | null;
 }
 
@@ -27,6 +28,7 @@ const Register = () => {
     username: "",
     email: "",
     password: "",
+    confirmPassword: "",
     avatar: null,
   };
 
@@ -38,6 +40,9 @@ const Register = () => {
     password: Yup.string()
       .min(5, "Password must be at least 5 characters long")
       .required("Password required"),
+    confirmPassword: Yup.string()
+      .oneOf([Yup.ref("password")], "Passwords do not match")
+      .required("Confirm password required"),
     avatar: Yup.mixed<File>()
       .nullable()
       .test("fileSize", "Max 2MB", (value) => !value || value.size <= 2 * 1024 * 1024)
@@ -128,6 +133,21 @@ const Register = () => {
                   }`}
               />
               <ErrorMessage name="password" component="div" className="text-red-500 text-xs mt-1" />
+            </div>
+
+            <div>
+              <label htmlFor="confirmPassword" className="block text-xs font-semibold text-gray-700 mb-1 dark:text-white">
+                Confirm Password
+              </label>
+              <Field
+                id="confirmPassword"
+                name="confirmPassword"
+                type="password"
+                placeholder="••••••••"
+                className={`w-full px-4 py-2.5 text-sm border-2 rounded-xl focus:outline-none focus:ring-2 transition-all ${errors.confirmPassword && touched.confirmPassword ? 'border-red-300 focus:ring-red-400' : 'border-gray-200 focus:ring-amber-400'
+                  }`}
+              />
+              <ErrorMessage name="confirmPassword" component="div" className="text-red-500 text-xs mt-1" />
             </div>
 
             <div className="pt-2">

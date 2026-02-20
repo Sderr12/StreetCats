@@ -2,9 +2,6 @@ import { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthProvider";
 import streetimage from "../assets/siamese-cat-new.png";
-import binoculars from '../assets/binoculars-white.png';
-import map from '../assets/map-white.png';
-import home from '../assets/home-white.png';
 
 
 const Home = () => {
