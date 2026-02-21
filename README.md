@@ -122,6 +122,15 @@ yarn install
 # Using pnpm
 pnpm install
 ```
+3. Create a .env file and insert:
+```
+DATABASE_URL=<your-database-url>
+REPO_TYPE=<your-orm-db> # Default implementation is <Prisma>.
+JWT_SECRET=<your-jwt-secret>
+JWT_DURATION=<your-jwt-duration> 
+PORT=<your-port>
+```
+
 4. Run the development server
 ```sh
 # Using npm
